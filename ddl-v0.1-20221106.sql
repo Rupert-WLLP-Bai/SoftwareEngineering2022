@@ -1,4 +1,4 @@
--- Active: 1667700485300@@119.3.154.46@3306
+-- Active: 1667725277146@@119.3.154.46@3306@SE2022
 
 /* 软件工程课程设计DDL */
 
@@ -18,14 +18,14 @@ DROP TABLE IF EXISTS `user`;
 
 CREATE TABLE
     IF NOT EXISTS `SE2022`.`user`(
-        `id` VARCHAR(36) NOT NULL COMMENT '用户id,uuid()',
-        -- 用户id，uuid()
-        `username` VARCHAR(255) NOT NULL COMMENT '用户名',
-        -- 用户名
+        `id` VARCHAR(36) NOT NULL COMMENT '用户id,学工号',
+        -- 用户id,学工号
         `password` VARCHAR(255) NOT NULL COMMENT '密码',
         -- 密码
+        `name` VARCHAR(255) NOT NULL COMMENT '姓名',
+        -- 姓名
         `email` VARCHAR(255) NOT NULL COMMENT '邮箱',
-        -- 邮箱›
+        -- 邮箱
         `phone` VARCHAR(255) NOT NULL COMMENT '电话',
         -- 电话
         `role` INT NOT NULL COMMENT '角色,0为管理员,1为学生,2为教师,3为助教',
@@ -36,8 +36,7 @@ CREATE TABLE
         -- 用户创建时间
         `update_time` DATETIME NOT NULL COMMENT '用户更新时间',
         -- 用户更新时间
-        PRIMARY KEY (`id`),
-        UNIQUE KEY `username` (`username`)
+        PRIMARY KEY (`id`)
     ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户表';
 
 /* 2.2 experiment表 */
@@ -74,12 +73,12 @@ CREATE TABLE
         FOREIGN KEY (`teacher_id`) REFERENCES `user` (`id`)
     ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '实验表';
 
-/* 2.3 score表 */
+/* 2.3 total_score表 */
 
-DROP TABLE IF EXISTS `score`;
+DROP TABLE IF EXISTS `total_score`;
 
 CREATE TABLE
-    IF NOT EXISTS `SE2022`.`score`(
+    IF NOT EXISTS `SE2022`.`total_score`(
         `id` VARCHAR(36) NOT NULL COMMENT '成绩id,uuid()',
         -- 成绩id，uuid()
         `student_id` VARCHAR(36) NOT NULL COMMENT '学生id',
@@ -216,28 +215,6 @@ CREATE TABLE
         -- 测验发布时间
         `status` INT NOT NULL COMMENT '测验状态,0为未发布,1为已发布,2为已结束',
         -- 测验状态,0为未发布,1为已发布,2为已结束
-        `problem_list` TEXT NOT NULL COMMENT '测验题目列表',
-        -- 测验题目列表(uuid)
-        /*
-         {
-         "problem_list": [
-         "1",
-         "2",
-         "3"
-         ]
-         }
-         */
-        `student_list` TEXT NOT NULL COMMENT '测验学生列表',
-        -- 测验学生列表(uuid)
-        /*
-         {
-         "student_list": [
-         "1",
-         "2",
-         "3"
-         ]
-         }
-         */
         PRIMARY KEY (`id`)
     ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '测验表';
 
@@ -268,3 +245,204 @@ CREATE TABLE
         FOREIGN KEY (`student_id`) REFERENCES `user` (`id`),
         FOREIGN KEY (`examination_id`) REFERENCES `examination` (`id`)
     ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '题目提交表';
+
+/* 2.8 examination_score表 */
+
+DROP TABLE IF EXISTS `examination_score`;
+
+CREATE TABLE
+    IF NOT EXISTS `SE2022`.`examination_score`(
+        `examination_id` VARCHAR(36) NOT NULL COMMENT '测验id',
+        -- 测验id
+        `student_id` VARCHAR(36) NOT NULL COMMENT '学生id',
+        -- 学生id
+        `score` INT NOT NULL COMMENT '学生测验成绩',
+        -- 学生测验成绩
+        `create_time` DATETIME NOT NULL COMMENT '学生测验成绩创建时间',
+        -- 学生测验成绩创建时间
+        `update_time` DATETIME NOT NULL COMMENT '学生测验成绩更新时间',
+        -- 学生测验成绩更新时间
+        PRIMARY KEY (
+            `examination_id`,
+            `student_id`
+        ),
+        FOREIGN KEY (`examination_id`) REFERENCES `examination` (`id`),
+        FOREIGN KEY (`student_id`) REFERENCES `user` (`id`)
+    ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '测验成绩表';
+
+/* 2.9 experiment_score表 */
+
+DROP TABLE IF EXISTS `experiment_score`;
+
+CREATE TABLE
+    IF NOT EXISTS `SE2022`.`experiment_score`(
+        `id` VARCHAR(36) NOT NULL COMMENT '实验成绩id,uuid()',
+        -- 实验成绩id,uuid()
+        `experiment_id` VARCHAR(36) NOT NULL COMMENT '实验id',
+        -- 实验id
+        `student_id` VARCHAR(36) NOT NULL COMMENT '学生id',
+        -- 学生id
+        `score` INT NOT NULL COMMENT '学生实验成绩',
+        -- 学生实验成绩
+        `create_time` DATETIME NOT NULL COMMENT '学生实验成绩创建时间',
+        -- 学生实验成绩创建时间
+        `update_time` DATETIME NOT NULL COMMENT '学生实验成绩更新时间',
+        -- 学生实验成绩更新时间
+        PRIMARY KEY (`id`),
+        FOREIGN KEY (`experiment_id`) REFERENCES `experiment` (`id`),
+        FOREIGN KEY (`student_id`) REFERENCES `user` (`id`)
+    ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '实验成绩表';
+
+/* 2.10 examination_problem_list表 */
+
+DROP TABLE IF EXISTS `examination_problem_list`;
+
+CREATE TABLE
+    IF NOT EXISTS `SE2022`.`examination_problem_list`(
+        `examination_id` VARCHAR(36) NOT NULL COMMENT '测验id',
+        -- 测验id
+        `problem_id` VARCHAR(36) NOT NULL COMMENT '题目id',
+        -- 题目id
+        PRIMARY KEY (
+            `examination_id`,
+            `problem_id`
+        ),
+        FOREIGN KEY (`examination_id`) REFERENCES `examination` (`id`),
+        FOREIGN KEY (`problem_id`) REFERENCES `problem` (`id`)
+    ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '测验题目列表';
+
+/* 2.11 examination_student_list表 */
+
+DROP TABLE IF EXISTS `examination_student_list`;
+
+CREATE TABLE
+    IF NOT EXISTS `SE2022`.`examination_student_list`(
+        `examination_id` VARCHAR(36) NOT NULL COMMENT '测验id',
+        -- 测验id
+        `student_id` VARCHAR(36) NOT NULL COMMENT '学生id',
+        -- 学生id
+        PRIMARY KEY (
+            `examination_id`,
+            `student_id`
+        ),
+        FOREIGN KEY (`examination_id`) REFERENCES `examination` (`id`),
+        FOREIGN KEY (`student_id`) REFERENCES `user` (`id`)
+    ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '测验学生列表';
+
+/* 2.12 total_weight表 */
+
+DROP TABLE IF EXISTS `total_weight`;
+
+CREATE TABLE
+    IF NOT EXISTS `SE2022`.`total_weight`(
+        `id` VARCHAR(36) NOT NULL COMMENT '总权重id,uuid()',
+        -- 总权重id,uuid()
+        `experiment_weight` INT NOT NULL COMMENT '实验权重',
+        -- 实验权重
+        `examination_weight` INT NOT NULL COMMENT '测验权重',
+        -- 测验权重
+        `create_time` DATETIME NOT NULL COMMENT '总权重创建时间',
+        -- 总权重创建时间
+        `update_time` DATETIME NOT NULL COMMENT '总权重更新时间',
+        -- 总权重更新时间
+        PRIMARY KEY (`id`)
+    ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '总权重表';
+
+/* 2.13 experiment_weight表 */
+
+DROP TABLE IF EXISTS `experiment_weight`;
+
+CREATE TABLE
+    IF NOT EXISTS `SE2022`.`experiment_weight`(
+        `id` VARCHAR(36) NOT NULL COMMENT '实验权重id,uuid()',
+        -- 实验权重id,uuid()
+        `experiment_id` VARCHAR(36) NOT NULL COMMENT '实验id',
+        -- 实验id
+        `weight` INT NOT NULL COMMENT '实验权重',
+        -- 实验权重
+        `create_time` DATETIME NOT NULL COMMENT '实验权重创建时间',
+        -- 实验权重创建时间
+        `update_time` DATETIME NOT NULL COMMENT '实验权重更新时间',
+        -- 实验权重更新时间
+        PRIMARY KEY (`id`),
+        FOREIGN KEY (`experiment_id`) REFERENCES `experiment` (`id`)
+    ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '实验权重表';
+
+/* 2.14 examination_weight表 */
+
+DROP TABLE IF EXISTS `examination_weight`;
+
+CREATE TABLE
+    IF NOT EXISTS `SE2022`.`examination_weight`(
+        `id` VARCHAR(36) NOT NULL COMMENT '测验权重id,uuid()',
+        -- 测验权重id,uuid()
+        `examination_id` VARCHAR(36) NOT NULL COMMENT '测验id',
+        -- 测验id
+        `weight` INT NOT NULL COMMENT '测验权重',
+        -- 测验权重
+        `create_time` DATETIME NOT NULL COMMENT '测验权重创建时间',
+        -- 测验权重创建时间
+        `update_time` DATETIME NOT NULL COMMENT '测验权重更新时间',
+        -- 测验权重更新时间
+        PRIMARY KEY (`id`),
+        FOREIGN KEY (`examination_id`) REFERENCES `examination` (`id`)
+    ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '测验权重表';
+
+/* 2.15 signin表 */
+
+DROP TABLE IF EXISTS `signin`;
+
+CREATE TABLE
+    IF NOT EXISTS `SE2022`.`signin`(
+        `id` VARCHAR(36) NOT NULL COMMENT '签到id,uuid()',
+        -- 签到id,uuid()
+        `teacher_id` VARCHAR(36) NOT NULL COMMENT '教师id',
+        -- 教师id
+        `name` VARCHAR(255) NOT NULL COMMENT '签到名称',
+        -- 签到名称
+        `start_time` DATETIME NOT NULL COMMENT '签到开始时间',
+        -- 签到开始时间
+        `end_time` DATETIME NOT NULL COMMENT '签到结束时间',
+        -- 签到结束时间
+        `create_time` DATETIME NOT NULL COMMENT '签到创建时间',
+        -- 签到创建时间
+        `update_time` DATETIME NOT NULL COMMENT '签到更新时间',
+        -- 签到更新时间
+        PRIMARY KEY (`id`),
+        FOREIGN KEY (`teacher_id`) REFERENCES `user` (`id`)
+    ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '签到表';
+
+/* 2.16 signin_student表 */
+
+DROP TABLE IF EXISTS `signin_student`;
+
+CREATE TABLE
+    IF NOT EXISTS `SE2022`.`signin_student`(
+        `signin_id` VARCHAR(36) NOT NULL COMMENT '签到id',
+        -- 签到id
+        `student_id` VARCHAR(36) NOT NULL COMMENT '学生id',
+        -- 学生id
+        `create_time` DATETIME NOT NULL COMMENT '签到学生创建时间',
+        -- 签到学生创建时间
+        `update_time` DATETIME NOT NULL COMMENT '签到学生更新时间',
+        -- 签到学生更新时间
+        PRIMARY KEY (`signin_id`, `student_id`),
+        FOREIGN KEY (`signin_id`) REFERENCES `signin` (`id`),
+        FOREIGN KEY (`student_id`) REFERENCES `user` (`id`)
+    ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '签到学生表';
+
+/* 2.17 user_login表 */
+
+DROP TABLE IF EXISTS `user_login`;
+
+CREATE TABLE
+    IF NOT EXISTS `SE2022`.`user_login`(
+        `user_id` VARCHAR(36) NOT NULL COMMENT '用户id',
+        -- 用户id
+        `login_time` DATETIME NOT NULL COMMENT '用户登录时间',
+        -- 用户登录时间
+        `ip` VARCHAR(255) NOT NULL COMMENT '用户登录ip',
+        -- 用户登录ip
+        PRIMARY KEY (`user_id`, `login_time`),
+        FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+    ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户登录表';
