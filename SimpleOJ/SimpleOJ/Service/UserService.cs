@@ -23,8 +23,7 @@ namespace SimpleOJ.Service {
         }
 
         public User GetByUserId(string? id) {
-            var user = this.GetById(id);
-            return user.Id == null ? new User() : user;
+            return this.GetById(id);
         }
 
         public User? AddUser(User user) {

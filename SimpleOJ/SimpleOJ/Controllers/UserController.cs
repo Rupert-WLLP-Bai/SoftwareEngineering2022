@@ -13,7 +13,7 @@ public class UserController : ControllerBase {
     public UserController() {
         _userService = new UserService();
     }
-    
+
     /// <summary>
     /// 条件查询
     /// </summary>
@@ -22,7 +22,7 @@ public class UserController : ControllerBase {
     [HttpPost("GetList")]
     public Result GetList([FromBody] User user) {
         return new Result(ResultCode.Success, _userService.GetList(user));
-    } 
+    }
 
     /// <summary>
     /// 按角色查询
@@ -33,7 +33,7 @@ public class UserController : ControllerBase {
     public Result GetListByRole(User.UserRole userRole) {
         return new Result(ResultCode.Success, _userService.GetByRole(userRole));
     }
-    
+
     // TODO 添加用户接口
     // TODO 其他接口也要加入权限的限制
 }

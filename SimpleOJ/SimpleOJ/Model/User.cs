@@ -69,8 +69,7 @@ namespace SimpleOJ.Model {
         /// <summary>
         /// 角色枚举
         /// </summary>
-        public enum UserRole
-        {
+        public enum UserRole {
             [Description("管理员")]
             Admin = 0,
             [Description("学生")]

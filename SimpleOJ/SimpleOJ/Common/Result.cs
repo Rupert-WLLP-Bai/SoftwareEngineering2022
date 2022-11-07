@@ -47,14 +47,14 @@ namespace SimpleOJ.Common {
     /// </summary>
     public enum ResultCode {
         // 通用状态码
-        
+
         // 未初始化
         [Description("未初始化")] Uninitialized = -1,
         // 成功
         [Description("成功")] Success = 0,
         // 失败
         [Description("失败")] Failure = 1,
-       
+
         // 登陆状态码
 
         // 登陆成功

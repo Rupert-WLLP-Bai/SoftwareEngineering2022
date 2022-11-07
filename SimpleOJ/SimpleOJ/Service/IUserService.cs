@@ -1,10 +1,8 @@
 ﻿using System.ComponentModel;
 using SimpleOJ.Model;
 
-namespace SimpleOJ.Service
-{
-    public interface IUserService
-    {
+namespace SimpleOJ.Service {
+    public interface IUserService {
         /// <summary>
         /// 条件查询
         /// </summary>
