@@ -7,6 +7,7 @@ namespace SimpleOJ.Service {
             return this.GetList(it =>
                 it.Id!.Equals(user.Id ?? it.Id) &&
                 it.Password!.Equals(user.Password ?? it.Password) &&
+                it.Salt!.Equals(user.Salt ?? it.Salt) &&
                 it.Name!.Equals(user.Name ?? it.Name) &&
                 it.Email!.Equals(user.Email ?? it.Email) &&
                 it.Phone!.Equals(user.Phone ?? it.Phone) &&
@@ -17,8 +18,17 @@ namespace SimpleOJ.Service {
             );
         }
 
-        public IEnumerable<User> GetByRole(IUserService.Role role) {
-            return this.GetList(it => it.Role! == (int?)role);
+        public IEnumerable<User> GetByRole(User.UserRole userRole) {
+            return this.GetList(it => it.Role! == (int?)userRole);
+        }
+
+        public User GetByUserId(string? id) {
+            var user = this.GetById(id);
+            return user.Id == null ? new User() : user;
+        }
+
+        public User? AddUser(User user) {
+            return this.Insert(user) ? user : null;
         }
     }
 }

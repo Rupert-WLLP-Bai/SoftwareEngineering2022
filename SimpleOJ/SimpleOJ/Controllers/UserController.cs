@@ -27,10 +27,13 @@ public class UserController : ControllerBase {
     /// <summary>
     /// 按角色查询
     /// </summary>
-    /// <param name="role">角色枚举</param>
+    /// <param name="userRole">角色枚举</param>
     /// <returns>符合对应角色的用户列表</returns>
-    [HttpPost("GetListByRole")]
-    public Result GetListByRole(IUserService.Role role) {
-        return new Result(ResultCode.Success, _userService.GetByRole(role));
+    [HttpGet("GetListByRole")]
+    public Result GetListByRole(User.UserRole userRole) {
+        return new Result(ResultCode.Success, _userService.GetByRole(userRole));
     }
+    
+    // TODO 添加用户接口
+    // TODO 其他接口也要加入权限的限制
 }

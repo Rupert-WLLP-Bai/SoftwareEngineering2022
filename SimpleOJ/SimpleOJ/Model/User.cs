@@ -1,4 +1,5 @@
-﻿using SqlSugar;
+﻿using System.ComponentModel;
+using SqlSugar;
 
 namespace SimpleOJ.Model {
     /// <summary>
@@ -16,6 +17,11 @@ namespace SimpleOJ.Model {
         ///</summary>
         [SugarColumn(ColumnName = "password")]
         public string? Password { get; set; }
+        /// <summary>
+        /// 盐值
+        /// </summary>
+        [SugarColumn(ColumnName = "salt")]
+        public string? Salt { get; set; }
         /// <summary>
         /// 姓名 
         ///</summary>
@@ -51,5 +57,28 @@ namespace SimpleOJ.Model {
         ///</summary>
         [SugarColumn(ColumnName = "update_time")]
         public DateTime? UpdateTime { get; set; }
+        /// <summary>
+        /// 用户状态枚举
+        /// </summary>
+        public enum UserStatus {
+            [Description("禁用")]
+            Deactivated = 0,
+            [Description("正常")]
+            Activated = 1
+        }
+        /// <summary>
+        /// 角色枚举
+        /// </summary>
+        public enum UserRole
+        {
+            [Description("管理员")]
+            Admin = 0,
+            [Description("学生")]
+            Student = 1,
+            [Description("教师")]
+            Teacher = 2,
+            [Description("助教")]
+            Assistant = 3
+        }
     }
 }
