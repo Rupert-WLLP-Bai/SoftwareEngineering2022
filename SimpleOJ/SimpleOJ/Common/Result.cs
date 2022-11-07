@@ -46,15 +46,33 @@ namespace SimpleOJ.Common {
     /// 状态码枚举
     /// </summary>
     public enum ResultCode {
+        // 通用状态码
+        
         // 未初始化
         [Description("未初始化")] Uninitialized = -1,
         // 成功
         [Description("成功")] Success = 0,
         // 失败
         [Description("失败")] Failure = 1,
-        // 未登录
-        [Description("未登录")] NotLogin = 2,
-        // 未授权
-        [Description("未授权")] NotAuthorized = 3,
+       
+        // 登陆状态码
+
+        // 登陆成功
+        [Description("登陆成功")] LoginSuccess = 1000,
+        // 登陆用户名不存在
+        [Description("登陆用户名不存在")] LoginUsernameNotExist = 1001,
+        // 登陆密码错误
+        [Description("登陆密码错误")] LoginPasswordError = 1002,
+
+        // 注册状态码
+
+        // 注册成功
+        [Description("注册成功")] RegisterSuccess = 2000,
+        // 注册用户名已存在
+        [Description("注册用户名已存在")] RegisterUsernameExist = 2001,
+        // 注册邮箱已存在
+        [Description("注册邮箱已存在")] RegisterEmailExist = 2002,
+        // 注册手机号已存在
+        [Description("注册手机号已存在")] RegisterPhoneExist = 2003,
     }
 }
