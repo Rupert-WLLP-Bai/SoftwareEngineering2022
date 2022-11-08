@@ -1,4 +1,5 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using System.ComponentModel;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using JWT;
@@ -6,24 +7,25 @@ using JWT.Algorithms;
 using JWT.Exceptions;
 using JWT.Serializers;
 using Microsoft.IdentityModel.Tokens;
+using SimpleOJ.Model;
 using SimpleOJ.Util;
 
 namespace SimpleOJ.Common {
     public class Jwt {
-        public static string GetToken() {
+        public static string GetToken(UserToken userInfo) {
             //创建用户身份标识，可按需要添加更多信息
             var claims = new Claim[]
             {
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim("id", "2053285", ClaimValueTypes.String), // 用户id
-                new Claim("name", "lbj"), // 用户名
-                new Claim("admin", true.ToString(), ClaimValueTypes.Boolean) // 是否是管理员
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),//jwt id 
+                new Claim("id", userInfo.Id, ClaimValueTypes.String), // 用户id
+                new Claim("role", userInfo.Role.ToString(), ClaimValueTypes.Integer) // 用户权限
             };
+            
             var key = Encoding.UTF8.GetBytes(JwtSetting.Instance.SecurityKey);
             //创建令牌
             var token = new JwtSecurityToken(
                 issuer: JwtSetting.Instance.Issuer,
-                audience: JwtSetting.Instance.Audience,
+                audience: userInfo.Id,
                 signingCredentials: new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
                 claims: claims,
                 notBefore: DateTime.Now,
@@ -57,5 +59,20 @@ namespace SimpleOJ.Common {
                 return "error";
             }
         }
+    }
+    /// <summary>
+    /// Jwt状态枚举
+    /// </summary>
+    public enum JwtStatus
+    {
+        [Description("有效")]
+        Valid = 0,
+        [Description("过期")]
+        Expired = 1,
+        [Description("无效")]
+        Invalid = 2,//错误token
+        [Description("错误")]
+        Error = 3,//解析失败
+
     }
 }
