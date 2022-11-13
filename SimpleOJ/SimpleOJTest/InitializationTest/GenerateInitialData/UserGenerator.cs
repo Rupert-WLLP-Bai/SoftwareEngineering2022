@@ -2,12 +2,12 @@ using SimpleOJ.Model;
 using SimpleOJ.Service;
 using SimpleOJ.Util;
 
-namespace SimpleOJ.Test.GenerateInitialData {
+namespace SimpleOJTest.InitializationTest.GenerateInitialData {
     public class UserGenerator {
         private readonly IUserService _userService;
 
-        public UserGenerator() {
-            _userService = new UserService();
+        public UserGenerator(IUserService userService) {
+            _userService = userService;
         }
 
         /// <summary>
