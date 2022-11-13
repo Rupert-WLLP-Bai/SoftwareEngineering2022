@@ -5,14 +5,16 @@
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json");
 
-            IConfigurationRoot Config = builder.Build();
+            var config = builder.Build();
 
 
-            Instance = new JwtSetting();
-            Instance.Audience = Config["JwtSetting:Audience"];
-            Instance.SecurityKey = Config["JwtSetting:SecurityKey"];
-            Instance.Issuer = Config["JwtSetting:Issuer"];
-            Instance.ExpireSeconds = int.Parse(Config["JwtSetting:ExpireSeconds"]);
+            Instance = new JwtSetting
+            {
+                Audience = config["JwtSetting:Audience"]!,
+                SecurityKey = config["JwtSetting:SecurityKey"]!,
+                Issuer = config["JwtSetting:Issuer"]!,
+                ExpireSeconds = int.Parse(config["JwtSetting:ExpireSeconds"]!)
+            };
         }
         public string SecurityKey { get; set; }
         public string Issuer { get; set; }

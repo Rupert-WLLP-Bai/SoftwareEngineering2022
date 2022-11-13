@@ -68,8 +68,8 @@ namespace SimpleOJ.Common {
 
         // 注册成功
         [Description("注册成功")] RegisterSuccess = 2000,
-        // 注册用户名已存在
-        [Description("注册用户名已存在")] RegisterUsernameExist = 2001,
+        // 注册id已存在
+        [Description("注册id已存在")] RegisterIdExist = 2001,
         // 注册邮箱已存在
         [Description("注册邮箱已存在")] RegisterEmailExist = 2002,
         // 注册手机号已存在

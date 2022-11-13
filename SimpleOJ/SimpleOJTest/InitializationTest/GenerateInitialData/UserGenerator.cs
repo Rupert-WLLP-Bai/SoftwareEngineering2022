@@ -46,7 +46,7 @@ namespace SimpleOJTest.InitializationTest.GenerateInitialData {
         /// 添加学生
         /// </summary>
         public void AddStudent() {
-            var studentNum = 100;
+            var studentNum = 10;
             for (var i = 0; i < studentNum; i++) {
                 var salt = SaltGenerator.GenerateSalt();
                 var password = EncryptPassword.Encrypt("student" + i, salt);
@@ -71,7 +71,7 @@ namespace SimpleOJTest.InitializationTest.GenerateInitialData {
         /// 添加教师
         /// </summary>
         public void AddTeacher() {
-            var teacherNum = 10;
+            var teacherNum = 5;
             for (var i = 0; i < teacherNum; i++) {
                 var salt = SaltGenerator.GenerateSalt();
                 var password = EncryptPassword.Encrypt("teacher" + i, salt);
@@ -96,7 +96,7 @@ namespace SimpleOJTest.InitializationTest.GenerateInitialData {
         /// 添加助教
         /// </summary>
         public void AddAssistant() {
-            var assistantNum = 50;
+            var assistantNum = 5;
             for (var i = 0; i < assistantNum; i++) {
                 var salt = SaltGenerator.GenerateSalt();
                 var password = EncryptPassword.Encrypt("assistant" + i, salt);

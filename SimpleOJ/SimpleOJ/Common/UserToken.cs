@@ -1,5 +1,4 @@
-﻿using System.Security.Claims;
-using SimpleOJ.Model;
+﻿using SimpleOJ.Model;
 
 namespace SimpleOJ.Common
 {

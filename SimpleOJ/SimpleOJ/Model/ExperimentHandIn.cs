@@ -5,7 +5,7 @@ namespace SimpleOJ.Model {
     /// 实验提交表
     ///</summary>
     [SugarTable("experiment_handin")]
-    public class ExperimentHandin {
+    public class ExperimentHandIn {
         /// <summary>
         /// 实验提交id,uuid() 
         ///</summary>

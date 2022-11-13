@@ -1,8 +1,5 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=9033e9f5_002D2162_002D4702_002D9ffa_002D5a250748baa0/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Generator" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
-  &lt;TestAncestor&gt;
-    &lt;TestId&gt;xUnit::381D0EFF-0940-4A59-A6B7-3C1B149CAB93::net6.0::SimpleOJ.Test.GenerateInitialData.Generator&lt;/TestId&gt;
-    &lt;TestId&gt;xUnit::381D0EFF-0940-4A59-A6B7-3C1B149CAB93::net6.0::SimpleOJ.Test.UserTest&lt;/TestId&gt;
-    &lt;TestId&gt;xUnit::381D0EFF-0940-4A59-A6B7-3C1B149CAB93::net6.0::SimpleOJ.Test.RedisTest.RedisTest.ConnectionTest&lt;/TestId&gt;
-  &lt;/TestAncestor&gt;
-&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=fef3b4e0_002D2a4d_002D48c2_002Da400_002D0aa39ca4d236/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from &amp;lt;SimpleOJTest&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;Project Location="/Users/bai/Desktop/SE/se2022/SimpleOJ/SimpleOJTest" Presentation="&amp;lt;SimpleOJTest&amp;gt;" /&gt;
+&lt;/SessionState&gt;</s:String>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=appsettings/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>

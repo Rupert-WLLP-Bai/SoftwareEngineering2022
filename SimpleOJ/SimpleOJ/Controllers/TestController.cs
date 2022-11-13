@@ -22,7 +22,7 @@ namespace SimpleOJ.Controllers
         
         [HttpPost("DecodeToken")]
         public Result DecodeToken([FromBody] string token) {
-            return new Result(ResultCode.Success,_jwtTokenService.DeocdeJwtToken(token,null));
+            return new Result(ResultCode.Success,_jwtTokenService.DecodeJwtToken(token,null));
         }
         
         [HttpPost("UpdateToken")]

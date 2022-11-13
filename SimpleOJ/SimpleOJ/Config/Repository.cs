@@ -11,7 +11,7 @@ namespace SimpleOJ.Config {
                 base.Context = Db;
             }
         }
-
+        
         /// <summary>
         /// SqlSugarScope操作数据库是线程安全的可以单例
         /// </summary>

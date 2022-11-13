@@ -22,7 +22,7 @@ namespace SimpleOJ.Service {
             return this.GetList(it => it.Role! == (int?)userRole);
         }
 
-        public User GetByUserId(string? id) {
+        public User? GetByUserId(string? id) {
             return this.GetById(id);
         }
 

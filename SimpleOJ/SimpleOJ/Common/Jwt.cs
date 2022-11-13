@@ -7,7 +7,6 @@ using JWT.Algorithms;
 using JWT.Exceptions;
 using JWT.Serializers;
 using Microsoft.IdentityModel.Tokens;
-using SimpleOJ.Model;
 using SimpleOJ.Util;
 
 namespace SimpleOJ.Common {

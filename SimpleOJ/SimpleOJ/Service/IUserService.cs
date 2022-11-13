@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using SimpleOJ.Model;
+﻿using SimpleOJ.Model;
 
 namespace SimpleOJ.Service {
     public interface IUserService {
@@ -22,7 +21,7 @@ namespace SimpleOJ.Service {
         /// </summary>
         /// <param name="id">学工号</param>
         /// <returns>返回对应用户，不存在则返回空用户</returns>
-        public User GetByUserId(string? id);
+        public User? GetByUserId(string? id);
 
         /// <summary>
         /// 添加用户
