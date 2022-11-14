@@ -16,5 +16,9 @@ namespace SimpleOJ.Model {
         ///</summary>
         [SugarColumn(ColumnName = "problem_id", IsPrimaryKey = true)]
         public string? ProblemId { get; set; }
+
+        public override string ToString() {
+            return $"{nameof(ExaminationId)}: {ExaminationId}, {nameof(ProblemId)}: {ProblemId}";
+        }
     }
 }

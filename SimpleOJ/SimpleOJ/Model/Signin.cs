@@ -41,5 +41,9 @@ namespace SimpleOJ.Model {
         ///</summary>
         [SugarColumn(ColumnName = "update_time")]
         public DateTime? UpdateTime { get; set; }
+
+        public override string ToString() {
+            return $"{nameof(Id)}: {Id}, {nameof(TeacherId)}: {TeacherId}, {nameof(Name)}: {Name}, {nameof(StartTime)}: {StartTime}, {nameof(EndTime)}: {EndTime}, {nameof(CreateTime)}: {CreateTime}, {nameof(UpdateTime)}: {UpdateTime}";
+        }
     }
 }

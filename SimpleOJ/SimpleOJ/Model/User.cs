@@ -79,5 +79,10 @@ namespace SimpleOJ.Model {
             [Description("助教")]
             Assistant = 3
         }
+
+        public override string ToString() {
+            return
+                $"{nameof(Id)}: {Id}, {nameof(Password)}: {Password}, {nameof(Salt)}: {Salt}, {nameof(Name)}: {Name}, {nameof(Email)}: {Email}, {nameof(Phone)}: {Phone}, {nameof(Role)}: {Role}, {nameof(Status)}: {Status}, {nameof(CreateTime)}: {CreateTime}, {nameof(UpdateTime)}: {UpdateTime}";
+        }
     }
 }

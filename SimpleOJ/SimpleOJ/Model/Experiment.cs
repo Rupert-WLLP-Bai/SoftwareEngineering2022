@@ -66,5 +66,9 @@ namespace SimpleOJ.Model {
         ///</summary>
         [SugarColumn(ColumnName = "upload_times_limit")]
         public int? UploadTimesLimit { get; set; }
+
+        public override string ToString() {
+            return $"{nameof(Id)}: {Id}, {nameof(TeacherId)}: {TeacherId}, {nameof(Name)}: {Name}, {nameof(Description)}: {Description}, {nameof(FilePath)}: {FilePath}, {nameof(Status)}: {Status}, {nameof(CreateTime)}: {CreateTime}, {nameof(UpdateTime)}: {UpdateTime}, {nameof(DistributeTime)}: {DistributeTime}, {nameof(StartTime)}: {StartTime}, {nameof(EndTime)}: {EndTime}, {nameof(UploadTimesLimit)}: {UploadTimesLimit}";
+        }
     }
 }

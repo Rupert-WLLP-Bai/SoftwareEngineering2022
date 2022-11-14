@@ -46,5 +46,9 @@ namespace SimpleOJ.Model {
         ///</summary>
         [SugarColumn(ColumnName = "score")]
         public int? Score { get; set; }
+
+        public override string ToString() {
+            return $"{nameof(Id)}: {Id}, {nameof(ProblemId)}: {ProblemId}, {nameof(StudentId)}: {StudentId}, {nameof(Code)}: {Code}, {nameof(UploadTime)}: {UploadTime}, {nameof(Language)}: {Language}, {nameof(ExaminationId)}: {ExaminationId}, {nameof(Score)}: {Score}";
+        }
     }
 }

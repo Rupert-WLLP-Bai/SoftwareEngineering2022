@@ -21,5 +21,9 @@ namespace SimpleOJ.Model {
         ///</summary>
         [SugarColumn(ColumnName = "ip")]
         public string? Ip { get; set; }
+
+        public override string ToString() {
+            return $"{nameof(UserId)}: {UserId}, {nameof(LoginTime)}: {LoginTime}, {nameof(Ip)}: {Ip}";
+        }
     }
 }
