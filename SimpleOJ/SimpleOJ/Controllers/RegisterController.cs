@@ -16,13 +16,13 @@ namespace SimpleOJ.Controllers {
         }
         
         [HttpPost("Register")]
-        public Result Register(string id,string password,string name,string email,string phone) {
+        public OldResult Register(string id,string password,string name,string email,string phone) {
             // 无权限限制
             // 查询数据库中是否存在id
             var user = _userService.GetByUserId(id);
             if (user != null) {
                 // 存在返回null
-                return new Result(ResultCode.RegisterIdExist, null);
+                return new OldResult(OldResultCode.RegisterIdExist, null);
             }
             // TODO 验证密码的合法性
             // TODO 验证手机邮箱的合法性
@@ -43,9 +43,9 @@ namespace SimpleOJ.Controllers {
             };
             if (_userService.AddUser(newUser) == null) {
                 // 添加失败
-                return new Result(ResultCode.Failure, null);
+                return new OldResult(OldResultCode.Failure, null);
             }
-            return new Result(ResultCode.Success, newUser);
+            return new OldResult(OldResultCode.Success, newUser);
         }
     }
 }

@@ -16,28 +16,28 @@ namespace SimpleOJ.Controllers
         }
 
         [HttpPost("GenToken")]
-        public Result GenToken([FromBody] UserToken userInfo) {
-            return new Result(ResultCode.Success,_jwtTokenService.GenerateToken(userInfo,DateTime.Now));
+        public OldResult GenToken([FromBody] UserToken userInfo) {
+            return new OldResult(OldResultCode.Success,_jwtTokenService.GenerateToken(userInfo,DateTime.Now));
         }
         
         [HttpPost("DecodeToken")]
-        public Result DecodeToken([FromBody] string token) {
-            return new Result(ResultCode.Success,_jwtTokenService.DecodeJwtToken(token,null));
+        public OldResult DecodeToken([FromBody] string token) {
+            return new OldResult(OldResultCode.Success,_jwtTokenService.DecodeJwtToken(token,null));
         }
         
         [HttpPost("UpdateToken")]
-        public Result Update(UserToken userInfo) {
-            return new Result(ResultCode.Success,_jwtTokenService.UpdateToken(userInfo));
+        public OldResult Update(UserToken userInfo) {
+            return new OldResult(OldResultCode.Success,_jwtTokenService.UpdateToken(userInfo));
         }
         
         [HttpPost("UpdateToken2")]
-        public Result UpdateToken(string token) {
-            return new Result(ResultCode.Success,_jwtTokenService.UpdateToken(token));
+        public OldResult UpdateToken(string token) {
+            return new OldResult(OldResultCode.Success,_jwtTokenService.UpdateToken(token));
         }
         
         [HttpPost("VerifyToken")]
-        public Result VerifyToken(string token) {
-            return new Result(ResultCode.Success,_jwtTokenService.VerifyToken(token,null));
+        public OldResult VerifyToken(string token) {
+            return new OldResult(OldResultCode.Success,_jwtTokenService.VerifyToken(token,null));
         }
 
         

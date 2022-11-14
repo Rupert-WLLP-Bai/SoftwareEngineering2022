@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ServiceStack.Redis;
 
 namespace SimpleOJ.Controllers {
     [ApiController]

@@ -20,8 +20,8 @@ public class UserController : ControllerBase {
     /// <param name="user">查询条件</param>
     /// <returns>符合条件的用户列表</returns>
     [HttpPost("GetList")]
-    public Result GetList([FromBody] User user) {
-        return new Result(ResultCode.Success, _userService.GetList(user));
+    public OldResult GetList([FromBody] User user) {
+        return new OldResult(OldResultCode.Success, _userService.GetList(user));
     }
 
     /// <summary>
@@ -30,8 +30,8 @@ public class UserController : ControllerBase {
     /// <param name="userRole">角色枚举</param>
     /// <returns>符合对应角色的用户列表</returns>
     [HttpGet("GetListByRole")]
-    public Result GetListByRole(User.UserRole userRole) {
-        return new Result(ResultCode.Success, _userService.GetByRole(userRole));
+    public OldResult GetListByRole(User.UserRole userRole) {
+        return new OldResult(OldResultCode.Success, _userService.GetByRole(userRole));
     }
 
     // TODO 添加用户接口
