@@ -14,9 +14,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // 配置跨域
-builder.Services.AddCors(options =>
-    options.AddPolicy("cors", p => p.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().AllowCredentials()));
-
+builder.Services.AddCors(options => {
+    options.AddPolicy("cors",
+        corsPolicyBuilder => corsPolicyBuilder.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+});
 // 添加HTTP相关的接口
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
