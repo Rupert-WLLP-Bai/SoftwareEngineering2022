@@ -13,6 +13,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// 配置跨域
+builder.Services.AddCors(options =>
+    options.AddPolicy("cors", p => p.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().AllowCredentials()));
+
 // 添加HTTP相关的接口
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
@@ -49,18 +53,23 @@ builder.Services.AddAuthentication("Bearer").AddJwtBearer(
     });
 
 // Swagger添加认证
-builder.Services.AddSwaggerGen(opt =>
-{
-    opt.SwaggerDoc("v1", new OpenApiInfo { Title = "SimpleOJ", Version = "v1" });
-    opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        In = ParameterLocation.Header,
-        Description = "Please Enter Token",
-        Name = "Authorization",
-        Type = SecuritySchemeType.Http,
-        BearerFormat = "JWT",
-        Scheme = "bearer"
-    });
+builder.Services.AddSwaggerGen(opt => {
+    opt.SwaggerDoc("v1",
+        new OpenApiInfo
+        {
+            Title = "SimpleOJ",
+            Version = "v1"
+        });
+    opt.AddSecurityDefinition("Bearer",
+        new OpenApiSecurityScheme
+        {
+            In = ParameterLocation.Header,
+            Description = "Please Enter Token",
+            Name = "Authorization",
+            Type = SecuritySchemeType.Http,
+            BearerFormat = "JWT",
+            Scheme = "bearer"
+        });
     opt.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
@@ -68,8 +77,8 @@ builder.Services.AddSwaggerGen(opt =>
             {
                 Reference = new OpenApiReference
                 {
-                    Type=ReferenceType.SecurityScheme,
-                    Id="Bearer"
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
                 }
             },
             Array.Empty<string>()
@@ -87,6 +96,9 @@ if (app.Environment.IsDevelopment()) {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// cors
+app.UseCors("cors");
 
 // middleware
 app.UseForwardedHeaders();
