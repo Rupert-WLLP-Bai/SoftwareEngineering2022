@@ -11,11 +11,21 @@ namespace SimpleOJ.Controllers {
     public class LoginController : ControllerBase, ILoginController {
         private readonly IUserService _userService;
         private readonly IJwtTokenService _jwtTokenService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILog _log;
-        public LoginController() {
+
+        // public LoginController() {
+        //     _userService = new UserService();
+        //     _jwtTokenService = new JwtTokenService();
+        //     _log = LogManager.GetLogger(typeof(LoginController));
+        //     _httpContextAccessor = new HttpContextAccessor();
+        // }
+
+        public LoginController(IHttpContextAccessor httpContextAccessor) {
             _userService = new UserService();
             _jwtTokenService = new JwtTokenService();
             _log = LogManager.GetLogger(typeof(LoginController));
+            _httpContextAccessor = httpContextAccessor;
         }
         /// <summary>
         /// 登录
@@ -25,6 +35,14 @@ namespace SimpleOJ.Controllers {
         /// <returns>登录状态以及Token</returns>
         [HttpPost("Login")]
         public Result<ILoginController.LoginUserInfo> Login(string id, string password) {
+            _log.Info($"调用{typeof(LoginController)},参数为: id = {id}, password = {password}");
+            string resultToken;
+            var ip = _httpContextAccessor.HttpContext?.Request.Headers["Origin"].FirstOrDefault();
+            _log.Info($"HTTP请求IP = {ip}");
+            if (ip == null) {
+                _log.Warn("ip为null");
+            }
+
             var user = _userService.GetByUserId(id);
             // 检查用户是否存在
             if (user == null) {
@@ -37,7 +55,6 @@ namespace SimpleOJ.Controllers {
                 return new Result<ILoginController.LoginUserInfo>(false, ResultCode.LoginPasswordIncorrect, null);
             }
 
-            string resultToken;
             // 在Redis中查找用户id
             if (!_jwtTokenService.ContainsKey(user.Id!)) {
                 // 不存在生成token
@@ -62,6 +79,7 @@ namespace SimpleOJ.Controllers {
             return new Result<ILoginController.LoginUserInfo>(true,
                 ResultCode.LoginSuccess,
                 new ILoginController.LoginUserInfo(user, resultToken));
+
 
         }
     }

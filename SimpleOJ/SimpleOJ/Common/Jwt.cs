@@ -13,7 +13,7 @@ namespace SimpleOJ.Common {
     public class Jwt {
         public static string GetToken(UserToken userInfo) {
             //创建用户身份标识，可按需要添加更多信息
-            var claims = new Claim[]
+            var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),//jwt id 
                 new Claim("id", userInfo.Id, ClaimValueTypes.String), // 用户id
@@ -30,7 +30,7 @@ namespace SimpleOJ.Common {
                 notBefore: DateTime.Now,
                 expires: DateTime.Now.AddSeconds(JwtSetting.Instance.ExpireSeconds) //加载自配置文件appsetting.json
             );
-            string jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
+            var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
             return jwtToken;
         }
 

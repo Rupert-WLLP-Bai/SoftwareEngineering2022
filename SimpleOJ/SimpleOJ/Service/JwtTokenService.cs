@@ -24,7 +24,7 @@ namespace SimpleOJ.Service {
 
             //var now = DateTime.Now;
 
-            var claims = new Claim[]
+            var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()), //jwt id 
                 new Claim("id", userInfo.Id, ClaimValueTypes.String), // 用户id
@@ -41,7 +41,7 @@ namespace SimpleOJ.Service {
                 notBefore: now,
                 expires: now.AddSeconds(JwtSetting.Instance.ExpireSeconds) //加载自配置文件appsetting.json
             );
-            string jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
+            var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
 
             //Set方法可以覆盖原有key值条目对应的键值
             //

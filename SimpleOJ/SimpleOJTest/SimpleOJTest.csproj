@@ -35,4 +35,12 @@
       <Folder Include="ConnectionTest\DatabaseTest" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Include="log4net.config">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
+    </ItemGroup>
+
 </Project>
