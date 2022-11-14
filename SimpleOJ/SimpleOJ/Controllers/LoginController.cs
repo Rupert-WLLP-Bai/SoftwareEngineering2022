@@ -8,51 +8,61 @@ using SimpleOJ.Util;
 namespace SimpleOJ.Controllers {
     [ApiController]
     [Route("api/[controller]")]
-    public class LoginController : ILoginController {
-
+    public class LoginController : ControllerBase, ILoginController {
         private readonly IUserService _userService;
-
         private readonly IJwtTokenService _jwtTokenService;
-
-        private static readonly ILog Log = LogManager.GetLogger("LoginController");
-
+        private readonly ILog _log;
         public LoginController() {
             _userService = new UserService();
             _jwtTokenService = new JwtTokenService();
+            _log = LogManager.GetLogger(typeof(LoginController));
         }
-
+        /// <summary>
+        /// 登录
+        /// </summary>
+        /// <param name="id">学工号</param>
+        /// <param name="password">密码</param>
+        /// <returns>登录状态以及Token</returns>
         [HttpPost("Login")]
-        public Result Login(string? id, string? password) {
+        public Result<ILoginController.LoginUserInfo> Login(string id, string password) {
             var user = _userService.GetByUserId(id);
             // 检查用户是否存在
             if (user == null) {
-                // 不存在则返回用户名不存在
-                return new Result(ResultCode.LoginUsernameNotExist, null);
+                return new Result<ILoginController.LoginUserInfo>(false, ResultCode.LoginAccountNotExist, null);
             }
-            // 存在，则验证密码是否正确
-            var pwd = EncryptPassword.Encrypt(password!, user.Salt!);
+
+            // 验证密码是否正确
+            var pwd = EncryptPassword.Encrypt(password, user.Salt!);
             if (!pwd.Equals(user.Password)) {
-                // 密码错误
-                return new Result(ResultCode.LoginPasswordError, null);
+                return new Result<ILoginController.LoginUserInfo>(false, ResultCode.LoginPasswordIncorrect, null);
             }
-            // 密码正确，在redis中查用户id
+
+            string resultToken;
+            // 在Redis中查找用户id
             if (!_jwtTokenService.ContainsKey(user.Id!)) {
-                // 如果不存在，生成token
+                // 不存在生成token
                 var userRole = (User.UserRole)Enum.Parse(typeof(User.UserRole), user.Role!.ToString()!);
-                var token = _jwtTokenService.GenerateToken(new UserToken(user.Id!, userRole), DateTime.Now);
-                Log.Debug($"UserId:{user.Id} 不存在Token, 生成的Token:{token}");
-                // 返回登陆成功，user数据和token
-                return new Result(ResultCode.LoginSuccess, new ILoginController.UserInfo(user, token));
+                var newToken = _jwtTokenService.GenerateToken(new UserToken(user.Id!, userRole), DateTime.Now);
+                _log.Debug($"UserId:{user.Id} 不存在Token, 生成的Token:{newToken}");
+                resultToken = newToken;
             } else {
+                // 存在则更新token
                 // 如果存在token
                 var tokenTime = JwtTokenService.client.GetValue(user.Id).TrimStart('\"').TrimEnd('\"');
-                Log.Debug($"UserId:{user.Id} 存在Token, 已存在的Token的创建时间:{tokenTime}");
+                _log.Debug($"UserId:{user.Id} 存在Token, 已存在的Token的创建时间:{tokenTime}");
                 //  更新Token
                 var updatedToken = _jwtTokenService.UpdateToken(new UserToken(user.Id!,
                     (User.UserRole)Enum.Parse(typeof(User.UserRole), user.Role.ToString()!)));
-                Log.Debug($"新生成的Token: {updatedToken}");
-                return new Result(ResultCode.LoginSuccess, new ILoginController.UserInfo(user, updatedToken));
+                _log.Debug($"新生成的Token: {updatedToken}");
+                resultToken = updatedToken;
             }
+
+            // 返回登录信息
+            _log.Debug($"当前登录用户:{user}");
+            return new Result<ILoginController.LoginUserInfo>(true,
+                ResultCode.LoginSuccess,
+                new ILoginController.LoginUserInfo(user, resultToken));
+
         }
     }
 }

@@ -31,9 +31,23 @@ namespace SimpleOJTest {
             var admin = admins.OrderBy(it=>Guid.NewGuid()).First();
             Assert.IsNotNull(admin);
             // TODO 测试登录
-            var result = new LoginController().Login("admin","admin");
-            Assert.AreEqual(Convert.ToInt32(ResultCode.LoginSuccess),result.Code);
+            var result = new OldOldLoginController().OldLogin("admin","admin");
+            Assert.AreEqual(Convert.ToInt32(OldResultCode.LoginSuccess),result.Code);
             Log.Debug(result.Msg);
+        }
+
+        [TestMethod]
+        public void NewLoginTest() {
+            ILoginController loginController = new LoginController();
+            Assert.AreEqual(true,loginController.Login("admin","admin").Status);
+            for (var i = 0; i < 10; i++) {
+                Assert.AreEqual(true,loginController.Login($"student{i}", $"student{i}").Status);
+            }
+
+            for (var i = 0; i < 5; i++) {
+               Assert.AreEqual(true,loginController.Login($"teacher{i}", $"teacher{i}").Status);
+                Assert.AreEqual(true,loginController.Login($"assistant{i}", $"assistant{i}").Status);
+            }
         }
     }
 }
