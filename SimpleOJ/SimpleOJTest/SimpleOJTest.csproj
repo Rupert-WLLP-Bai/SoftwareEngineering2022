@@ -37,11 +37,12 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="log4net.config">
+      <None Include="log4net.properties">
         <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      </Content>
+      </None>
     </ItemGroup>
+
 
 </Project>

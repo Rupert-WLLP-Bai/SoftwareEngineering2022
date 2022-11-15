@@ -12,12 +12,13 @@ namespace SimpleOJTest {
         [TestInitialize]
         public void Init() {
             // 读取log4net配置
-            XmlConfigurator.Configure(new FileInfo("log4net.config"));
+            //  XmlConfigurator.Configure(new FileInfo("log4net.properties"));
         }
         private readonly IUserService _userService;
-        private static readonly ILog Log = LogManager.GetLogger("LoginTest");
+        private readonly ILog _log;
         public LoginTest() {
             _userService = new UserService();
+            _log = LogManager.GetLogger("LoginTest");
         }
         /// <summary>
         /// 模拟管理员登录
@@ -34,7 +35,7 @@ namespace SimpleOJTest {
             // TODO 测试登录
             var result = new OldOldLoginController().OldLogin("admin","admin");
             Assert.AreEqual(Convert.ToInt32(OldResultCode.LoginSuccess),result.Code);
-            Log.Debug(result.Msg);
+            _log.Debug(result.Msg);
         }
 
         [TestMethod]

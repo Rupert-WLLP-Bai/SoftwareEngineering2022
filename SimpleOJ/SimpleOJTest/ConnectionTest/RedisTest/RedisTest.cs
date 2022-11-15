@@ -9,7 +9,7 @@ namespace SimpleOJTest.ConnectionTest.RedisTest {
         [TestInitialize]
         public void Init() {
             // 读取log4net配置
-            XmlConfigurator.Configure(new FileInfo("log4net.config"));
+            // XmlConfigurator.Configure(new FileInfo("log4net.properties"));
         }
         private static readonly ILog Log = LogManager.GetLogger("RedisTest");
         [TestMethod]
