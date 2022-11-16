@@ -56,6 +56,11 @@ namespace SimpleOJ.Controllers {
         {
             var fileName = chart.FileName;
             string fileExtension = chart.FileName.Substring(chart.FileName.LastIndexOf(".") + 1);//获取文件名后缀
+            if (fileExtension != "csv")
+            {
+                return new OldResult(OldResultCode.Failure, "文件格式错误，请上传csv");
+            }
+
             //保存文件
             var stream = chart.OpenReadStream();
             //把stream转换成byte[]
