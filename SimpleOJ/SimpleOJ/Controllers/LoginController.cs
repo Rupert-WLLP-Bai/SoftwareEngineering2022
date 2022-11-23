@@ -27,13 +27,15 @@ namespace SimpleOJ.Controllers {
             _log = LogManager.GetLogger(typeof(LoginController));
             _httpContextAccessor = httpContextAccessor;
         }
+
+
+
         /// <summary>
         /// 登录
         /// </summary>
-        /// <param name="id">学工号</param>
-        /// <param name="password">密码</param>
+        /// <param name="loginParam">登录参数</param>
         /// <returns>登录状态以及Token</returns>
-        [HttpPost("Login")]
+        [HttpPost("Account")]
         public Result<ILoginController.LoginUserInfo> Login(ILoginController.LoginParam loginParam) {
             var id = loginParam.Id!;
             var password = loginParam.Password!;
