@@ -12,7 +12,7 @@ namespace SimpleOJ.Controllers {
     public class AuthTest {
         private static readonly ILog Log = LogManager.GetLogger(typeof(AuthTest));
         private readonly IJwtTokenService _jwtTokenService;
-        private AuthTest() {
+        public AuthTest() {
             _jwtTokenService = new JwtTokenService();
         }
         public record AuthTestResult(string Message, string Token);
