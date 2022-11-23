@@ -43,11 +43,10 @@ namespace SimpleOJ.Controllers {
                 _log.Warn("ip为null");
             }
 
-            
+
             if (_httpContextAccessor.HttpContext?.Request.Headers != null) {
-                foreach (var (key, value) in _httpContextAccessor.HttpContext?.Request.Headers) {
+                foreach (var (key, value) in _httpContextAccessor.HttpContext?.Request.Headers)
                     _log.Info($"key = {key}, value = {value.ToString()}");
-                }
             }
 
             var user = _userService.GetByUserId(id);

@@ -67,7 +67,8 @@ namespace SimpleOJ.Model {
         [SugarColumn(ColumnName = "test_case")]
         public string? TestCase { get; set; }
         public override string ToString() {
-            return $"{nameof(Id)}: {Id}, {nameof(Title)}: {Title}, {nameof(Description)}: {Description}, {nameof(Tag)}: {Tag}, {nameof(SampleInput)}: {SampleInput}, {nameof(SampleOutput)}: {SampleOutput}, {nameof(SampleExplaination)}: {SampleExplaination}, {nameof(Difficulty)}: {Difficulty}, {nameof(CreateTime)}: {CreateTime}, {nameof(UpdateTime)}: {UpdateTime}, {nameof(CodeTemplate)}: {CodeTemplate}, {nameof(TestCase)}: {TestCase}";
+            return
+                $"{nameof(Id)}: {Id}, {nameof(Title)}: {Title}, {nameof(Description)}: {Description}, {nameof(Tag)}: {Tag}, {nameof(SampleInput)}: {SampleInput}, {nameof(SampleOutput)}: {SampleOutput}, {nameof(SampleExplaination)}: {SampleExplaination}, {nameof(Difficulty)}: {Difficulty}, {nameof(CreateTime)}: {CreateTime}, {nameof(UpdateTime)}: {UpdateTime}, {nameof(CodeTemplate)}: {CodeTemplate}, {nameof(TestCase)}: {TestCase}";
         }
     }
 }

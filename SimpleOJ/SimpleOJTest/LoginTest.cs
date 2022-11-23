@@ -30,29 +30,29 @@ namespace SimpleOJTest {
             Assert.IsNotNull(admins);
             Assert.AreNotEqual(0, admins.Count);
             // 随机取出一个管理员
-            var admin = admins.OrderBy(_=>Guid.NewGuid()).First();
+            var admin = admins.OrderBy(_ => Guid.NewGuid()).First();
             Assert.IsNotNull(admin);
             // TODO 测试登录
-            var result = new OldOldLoginController().OldLogin("admin","admin");
-            Assert.AreEqual(Convert.ToInt32(OldResultCode.LoginSuccess),result.Code);
+            var result = new OldOldLoginController().OldLogin("admin", "admin");
+            Assert.AreEqual(Convert.ToInt32(OldResultCode.LoginSuccess), result.Code);
             _log.Debug(result.Msg);
         }
 
         [TestMethod]
         public void NewLoginTest() {
             ILoginController loginController = new LoginController(new HttpContextAccessor());
-            var status = loginController.Login("admin","admin").Status;
-            Assert.AreEqual(true,status);
+            var status = loginController.Login("admin", "admin").Status;
+            Assert.AreEqual(true, status);
             for (var i = 0; i < 10; i++) {
                 var s = loginController.Login($"student{i}", $"student{i}").Status;
-                Assert.AreEqual(true,s);
+                Assert.AreEqual(true, s);
             }
 
             for (var i = 0; i < 5; i++) {
                 var s1 = loginController.Login($"teacher{i}", $"teacher{i}").Status;
                 var s2 = loginController.Login($"assistant{i}", $"assistant{i}").Status;
-                Assert.AreEqual(true,s1);
-                Assert.AreEqual(true,s2);
+                Assert.AreEqual(true, s1);
+                Assert.AreEqual(true, s2);
             }
         }
     }

@@ -3,37 +3,37 @@ using SimpleOJ.Common;
 using SimpleOJ.Model;
 using SimpleOJ.Service;
 
-namespace SimpleOJ.Controllers;
+namespace SimpleOJ.Controllers {
+    [ApiController]
+    [Route("api/[controller]")]
+    public class UserController : ControllerBase {
+        private readonly IUserService _userService;
 
-[ApiController]
-[Route("api/[controller]")]
-public class UserController : ControllerBase {
-    private readonly IUserService _userService;
+        public UserController() {
+            _userService = new UserService();
+        }
 
-    public UserController() {
-        _userService = new UserService();
+        /// <summary>
+        /// 条件查询
+        /// </summary>
+        /// <param name="user">查询条件</param>
+        /// <returns>符合条件的用户列表</returns>
+        [HttpPost("GetList")]
+        public OldResult GetList([FromBody] User user) {
+            return new OldResult(OldResultCode.Success, _userService.GetList(user));
+        }
+
+        /// <summary>
+        /// 按角色查询
+        /// </summary>
+        /// <param name="userRole">角色枚举</param>
+        /// <returns>符合对应角色的用户列表</returns>
+        [HttpGet("GetListByRole")]
+        public OldResult GetListByRole(User.UserRole userRole) {
+            return new OldResult(OldResultCode.Success, _userService.GetByRole(userRole));
+        }
+
+        // TODO 添加用户接口
+        // TODO 其他接口也要加入权限的限制
     }
-
-    /// <summary>
-    /// 条件查询
-    /// </summary>
-    /// <param name="user">查询条件</param>
-    /// <returns>符合条件的用户列表</returns>
-    [HttpPost("GetList")]
-    public OldResult GetList([FromBody] User user) {
-        return new OldResult(OldResultCode.Success, _userService.GetList(user));
-    }
-
-    /// <summary>
-    /// 按角色查询
-    /// </summary>
-    /// <param name="userRole">角色枚举</param>
-    /// <returns>符合对应角色的用户列表</returns>
-    [HttpGet("GetListByRole")]
-    public OldResult GetListByRole(User.UserRole userRole) {
-        return new OldResult(OldResultCode.Success, _userService.GetByRole(userRole));
-    }
-
-    // TODO 添加用户接口
-    // TODO 其他接口也要加入权限的限制
 }

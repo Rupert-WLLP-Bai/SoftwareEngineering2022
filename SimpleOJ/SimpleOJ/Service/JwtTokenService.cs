@@ -34,8 +34,8 @@ namespace SimpleOJ.Service {
             };
             //创建令牌
             var token = new JwtSecurityToken(
-                issuer: JwtSetting.Instance.Issuer,
-                audience: userInfo.Id,
+                JwtSetting.Instance.Issuer,
+                userInfo.Id,
                 signingCredentials: new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
                 claims: claims,
                 notBefore: now,
@@ -45,7 +45,9 @@ namespace SimpleOJ.Service {
 
             //Set方法可以覆盖原有key值条目对应的键值
             //
-            client.Set(userInfo.Id, now.ToLocalTime().ToString(CultureInfo.CurrentCulture), new TimeSpan(0, 0, 30, 0)); //refresh token存入redis
+            client.Set(userInfo.Id,
+                now.ToLocalTime().ToString(CultureInfo.CurrentCulture),
+                new TimeSpan(0, 0, 30, 0)); //refresh token存入redis
             return jwtToken;
         }
 
@@ -123,6 +125,7 @@ namespace SimpleOJ.Service {
                     if (ContainsKey(userId) && issuedAt.Equals(client.Get<string>(userId))) {
                         return JwtStatus.Expired;
                     }
+
                     return JwtStatus.Invalid;
                 }
                 default:
@@ -133,9 +136,11 @@ namespace SimpleOJ.Service {
                     if (ContainsKey(userId) && issuedAt.Equals(client.Get<string>(userId))) {
                         return JwtStatus.Valid;
                     }
+
                     return JwtStatus.Invalid;
                 }
             }
+
             return JwtStatus.Error;
         }
 
@@ -162,7 +167,7 @@ namespace SimpleOJ.Service {
             return client.ContainsKey(userId);
         }
 
-        public IReadOnlyDictionary<string, object> parseJwt(String token, string secret) {
+        public IReadOnlyDictionary<string, object> parseJwt(string token, string secret) {
             try {
                 secret = secret ?? JwtSetting.Instance.SecurityKey;
                 IJsonSerializer serializer = new JsonNetSerializer();
@@ -179,6 +184,7 @@ namespace SimpleOJ.Service {
                 //表示过期
                 return claims;
             }
+
             return null;
         }
 

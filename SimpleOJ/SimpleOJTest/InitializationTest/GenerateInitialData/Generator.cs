@@ -8,7 +8,7 @@ namespace SimpleOJTest.InitializationTest.GenerateInitialData {
         public void QueryTest() {
             var adminList = new UserService().GetByRole(User.UserRole.Admin);
             // admin的个数为1
-            Assert.AreEqual(1,adminList.Count());
+            Assert.AreEqual(1, adminList.Count());
         }
     }
 }

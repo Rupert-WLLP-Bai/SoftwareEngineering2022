@@ -8,17 +8,17 @@ namespace SimpleOJ.Config {
         /// <param name="context"></param>
         public Repository(ISqlSugarClient? context = null) : base(context) {
             if (context == null) {
-                base.Context = Db;
+                Context = Db;
             }
         }
-        
+
         /// <summary>
         /// SqlSugarScope操作数据库是线程安全的可以单例
         /// </summary>
         public static readonly SqlSugarScope Db = new SqlSugarScope(
             new ConnectionConfig()
             {
-                DbType = SqlSugar.DbType.MySql,
+                DbType = DbType.MySql,
                 ConnectionString = @"server=119.3.154.46;Database=SE2022;Uid=bjh;Pwd=1230;",
                 IsAutoCloseConnection = true
             },

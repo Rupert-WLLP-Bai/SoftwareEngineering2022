@@ -17,13 +17,14 @@ namespace SimpleOJTest.InitializationTest.GenerateInitialData {
             var count = UserRepository.Count(it => it.Id != null);
             Console.WriteLine($"User数量为{count}");
         }
-        
+
         public static void Generate() {
             var count = new Repository<User>().Count(it => it.Id != null);
             if (count != 0) {
                 Console.WriteLine("执行生成User前User表不为空，清空User表");
-                UserStaticMethod.ClearAll();
+                ClearAll();
             }
+
             new UserGenerator(new UserService()).GenerateUser();
         }
     }

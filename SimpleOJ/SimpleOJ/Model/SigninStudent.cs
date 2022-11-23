@@ -28,7 +28,8 @@ namespace SimpleOJ.Model {
         public DateTime? UpdateTime { get; set; }
 
         public override string ToString() {
-            return $"{nameof(SigninId)}: {SigninId}, {nameof(StudentId)}: {StudentId}, {nameof(CreateTime)}: {CreateTime}, {nameof(UpdateTime)}: {UpdateTime}";
+            return
+                $"{nameof(SigninId)}: {SigninId}, {nameof(StudentId)}: {StudentId}, {nameof(CreateTime)}: {CreateTime}, {nameof(UpdateTime)}: {UpdateTime}";
         }
     }
 }

@@ -29,12 +29,14 @@ namespace SimpleOJ.Controllers {
                 // 不存在则返回用户名不存在
                 return new OldResult(OldResultCode.LoginUsernameNotExist, null);
             }
+
             // 存在，则验证密码是否正确
             var pwd = EncryptPassword.Encrypt(password!, user.Salt!);
             if (!pwd.Equals(user.Password)) {
                 // 密码错误
                 return new OldResult(OldResultCode.LoginPasswordError, null);
             }
+
             // 密码正确，在redis中查用户id
             if (!_jwtTokenService.ContainsKey(user.Id!)) {
                 // 如果不存在，生成token
@@ -54,7 +56,7 @@ namespace SimpleOJ.Controllers {
                 return new OldResult(OldResultCode.LoginSuccess, new IOldLoginController.OldUserInfo(user, updatedToken));
             }
         }
-        
-        
+
+
     }
 }

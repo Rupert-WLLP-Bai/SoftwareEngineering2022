@@ -51,7 +51,7 @@ builder.Services.AddAuthentication("Bearer").AddJwtBearer(
             ValidAudience = jwtConfig.GetValue<string>("Audience"), //订阅人
             ValidateLifetime = true, //是否验证过期时间，过期了就拒绝访问
             ClockSkew = TimeSpan.Zero, //这个是缓冲过期时间，也就是说，即使我们配置了过期时间，这里也要考虑进去，过期时间+缓冲，默认好像是7分钟，可以直接设置为0
-            RequireExpirationTime = true,
+            RequireExpirationTime = true
         };
     });
 

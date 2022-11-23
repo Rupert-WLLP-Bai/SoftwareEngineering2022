@@ -38,6 +38,7 @@ namespace SimpleOJ.Common {
                 } attrs) {
                 return attrs[0].Description; //返回当前描述
             }
+
             return en.ToString();
         }
     }
@@ -73,6 +74,6 @@ namespace SimpleOJ.Common {
         // 注册邮箱已存在
         [Description("注册邮箱已存在")] RegisterEmailExist = 2002,
         // 注册手机号已存在
-        [Description("注册手机号已存在")] RegisterPhoneExist = 2003,
+        [Description("注册手机号已存在")] RegisterPhoneExist = 2003
     }
 }

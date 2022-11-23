@@ -53,7 +53,8 @@ namespace SimpleOJ.Model {
         public int Status { get; set; }
 
         public override string ToString() {
-            return $"{nameof(Id)}: {Id}, {nameof(Title)}: {Title}, {nameof(Description)}: {Description}, {nameof(StartTime)}: {StartTime}, {nameof(EndTime)}: {EndTime}, {nameof(CreateTime)}: {CreateTime}, {nameof(UpdateTime)}: {UpdateTime}, {nameof(DistributedTime)}: {DistributedTime}, {nameof(Status)}: {Status}";
+            return
+                $"{nameof(Id)}: {Id}, {nameof(Title)}: {Title}, {nameof(Description)}: {Description}, {nameof(StartTime)}: {StartTime}, {nameof(EndTime)}: {EndTime}, {nameof(CreateTime)}: {CreateTime}, {nameof(UpdateTime)}: {UpdateTime}, {nameof(DistributedTime)}: {DistributedTime}, {nameof(Status)}: {Status}";
         }
     }
 }

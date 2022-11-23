@@ -4,7 +4,7 @@ using SimpleOJ.Model;
 namespace SimpleOJ.Service {
     public class UserService : Repository<User>, IUserService {
         public IEnumerable<User> GetList(User user) {
-            return this.GetList(it =>
+            return GetList(it =>
                 it.Id!.Equals(user.Id ?? it.Id) &&
                 it.Password!.Equals(user.Password ?? it.Password) &&
                 it.Salt!.Equals(user.Salt ?? it.Salt) &&
@@ -19,15 +19,15 @@ namespace SimpleOJ.Service {
         }
 
         public IEnumerable<User> GetByRole(User.UserRole userRole) {
-            return this.GetList(it => it.Role! == (int?)userRole);
+            return GetList(it => it.Role! == (int?)userRole);
         }
 
         public User? GetByUserId(string? id) {
-            return this.GetById(id);
+            return GetById(id);
         }
 
         public User? AddUser(User user) {
-            return this.Insert(user) ? user : null;
+            return Insert(user) ? user : null;
         }
     }
 }
