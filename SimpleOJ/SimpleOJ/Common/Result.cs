@@ -2,7 +2,8 @@ using System.ComponentModel;
 
 namespace SimpleOJ.Common {
     public class Result<T> {
-        public bool? Status { get; set; }
+        public bool? Success { get; set; }
+        public string? Status { get; set; }
         public int? Code { get; set; }
         public string? Msg { get; set; }
         public T? Data { get; set; }
@@ -15,7 +16,8 @@ namespace SimpleOJ.Common {
         /// <param name="msg">状态码描述</param>
         /// <param name="data">数据</param>
         private void Init(bool? status, int? code, string? msg, T? data) {
-            Status = status;
+            Success = status;
+            Status = status == true ? "ok" : "error";
             Code = code;
             Msg = msg;
             Data = data;
@@ -50,7 +52,7 @@ namespace SimpleOJ.Common {
             Init(status, (int)resultCode, GetStatusCodeDescription(resultCode), data);
         }
         public override string ToString() {
-            return $"{nameof(Status)}: {Status}, {nameof(Code)}: {Code}, {nameof(Msg)}: {Msg}, {nameof(Data)}: {Data}";
+            return $"{nameof(Success)}: {Success}, {nameof(Code)}: {Code}, {nameof(Msg)}: {Msg}, {nameof(Data)}: {Data}";
         }
     }
 

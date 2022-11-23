@@ -37,23 +37,5 @@ namespace SimpleOJTest {
             Assert.AreEqual(Convert.ToInt32(OldResultCode.LoginSuccess), result.Code);
             _log.Debug(result.Msg);
         }
-
-        [TestMethod]
-        public void NewLoginTest() {
-            ILoginController loginController = new LoginController(new HttpContextAccessor());
-            var status = loginController.Login("admin", "admin").Status;
-            Assert.AreEqual(true, status);
-            for (var i = 0; i < 10; i++) {
-                var s = loginController.Login($"student{i}", $"student{i}").Status;
-                Assert.AreEqual(true, s);
-            }
-
-            for (var i = 0; i < 5; i++) {
-                var s1 = loginController.Login($"teacher{i}", $"teacher{i}").Status;
-                var s2 = loginController.Login($"assistant{i}", $"assistant{i}").Status;
-                Assert.AreEqual(true, s1);
-                Assert.AreEqual(true, s2);
-            }
-        }
     }
 }

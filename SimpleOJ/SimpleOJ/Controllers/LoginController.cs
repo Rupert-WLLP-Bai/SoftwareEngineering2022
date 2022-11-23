@@ -34,7 +34,9 @@ namespace SimpleOJ.Controllers {
         /// <param name="password">密码</param>
         /// <returns>登录状态以及Token</returns>
         [HttpPost("Login")]
-        public Result<ILoginController.LoginUserInfo> Login(string id, string password) {
+        public Result<ILoginController.LoginUserInfo> Login(ILoginController.LoginParam loginParam) {
+            var id = loginParam.Id!;
+            var password = loginParam.Password!;
             _log.Info($"调用{typeof(LoginController)},参数为: id = {id}, password = {password}");
             string resultToken;
             var ip = _httpContextAccessor.HttpContext?.Request.Headers["Origin"].FirstOrDefault();
