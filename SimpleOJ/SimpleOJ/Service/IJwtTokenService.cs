@@ -17,6 +17,13 @@ namespace SimpleOJ.Service {
         /// <param name="userInfo"></param>
         /// <returns>jwtToken</returns>
         public string UpdateToken(UserToken userInfo);
+        
+        /// <summary>
+        /// 删除token
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns>jwtToken</returns>
+        public void DeleteToken(string userId);
 
         public string UpdateToken(string token);
 
@@ -28,6 +35,8 @@ namespace SimpleOJ.Service {
         public JwtStatus VerifyToken(string token, string secret);
 
         public bool TokenStatus(string token, string secret);
+
+        public string ParseUserId(string token);
 
         /// <summary>
         /// 判断用户(key)是否存在于redis
@@ -42,6 +51,6 @@ namespace SimpleOJ.Service {
         /// <param name="token"></param>
         /// <param name="key"></param>
         /// <returns>未过期token的string类型json，其他情况返回exception</returns>
-        public string DecodeJwtToken(string token, string? key);
+        public object DecodeJwtToken(string token, string? key);
     }
 }
