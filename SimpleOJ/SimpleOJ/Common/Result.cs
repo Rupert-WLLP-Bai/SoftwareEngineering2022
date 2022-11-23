@@ -47,13 +47,13 @@ namespace SimpleOJ.Common {
         /// <param name="resultCode">状态码枚举</param>
         /// <param name="data">数据</param>
         public Result(bool status, ResultCode resultCode, T? data) {
-            Init(status: status, code: (int)resultCode, msg: GetStatusCodeDescription(resultCode), data: data);
+            Init(status, (int)resultCode, GetStatusCodeDescription(resultCode), data);
         }
         public override string ToString() {
             return $"{nameof(Status)}: {Status}, {nameof(Code)}: {Code}, {nameof(Msg)}: {Msg}, {nameof(Data)}: {Data}";
         }
     }
-    
+
     /// <summary>
     /// 状态码枚举
     /// </summary>
@@ -67,7 +67,7 @@ namespace SimpleOJ.Common {
         Success = 0,
         [Description("失败")]
         Failure = 1,
-        
+
         // 登录 10XX
         [Description("登录成功")]
         LoginSuccess = 1000,
@@ -76,7 +76,14 @@ namespace SimpleOJ.Common {
         [Description("登录账号不存在")]
         LoginAccountNotExist = 1002,
         [Description("登录账号未激活")]
-        LoginAccountNotActivated = 1003,    
-        
+        LoginAccountNotActivated = 1003,
+
+        // 注册 11XX
+        [Description("注册成功")]
+        RegisterSuccess = 1100,
+        [Description("注册账号已存在")]
+        RegisterAccountExist = 1101,
+        [Description("数据库添加注册用户失败")]
+        RegisterAddUserFailed = 1102
     }
 }
