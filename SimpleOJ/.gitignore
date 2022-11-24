@@ -5,3 +5,7 @@ riderModule.iml
 /_ReSharper.Caches/
 .vscode/
 .idea/
+
+// any .ds_store files
+.DS_Store
+**/.DS_Store
