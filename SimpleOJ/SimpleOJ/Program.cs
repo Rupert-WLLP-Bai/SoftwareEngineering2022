@@ -100,6 +100,13 @@ if (app.Environment.IsDevelopment()) {
     app.UseSwaggerUI();
 }
 
+// use forwarded headers
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor |
+                       ForwardedHeaders.XForwardedProto
+});
+
 // cors
 app.UseCors("cors");
 
