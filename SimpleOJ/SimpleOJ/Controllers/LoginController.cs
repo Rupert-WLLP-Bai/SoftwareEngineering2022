@@ -41,17 +41,24 @@ namespace SimpleOJ.Controllers {
             var password = loginParam.Password!;
             _log.Info($"调用{typeof(LoginController)},参数为: id = {id}, password = {password}");
             string resultToken;
-            var ip = _httpContextAccessor.HttpContext?.Request.Headers["Origin"].FirstOrDefault();
-            _log.Info($"HTTP请求IP = {ip}");
-            if (ip == null) {
-                _log.Warn("ip为null");
-            }
+            
+            // var ip = _httpContextAccessor.HttpContext?.Request.Headers["Origin"].FirstOrDefault();
+            // _log.Info($"HTTP请求IP = {ip}");
+            // if (ip == null) {
+            //     _log.Warn("ip为null");
+            // }
 
+            var iPv4 = Request.HttpContext.Connection.RemoteIpAddress?.MapToIPv4();
+            var remotePort = Request.HttpContext.Connection.RemotePort;
+            var iPv6 = Request.HttpContext.Connection.RemoteIpAddress?.MapToIPv6();
+            _log.Info($"IPv4 = {iPv4}");
+            _log.Info($"IPv6 = {iPv6}");
+            _log.Info($"RemotePort = {remotePort}");
 
-            if (_httpContextAccessor.HttpContext?.Request.Headers != null) {
-                foreach (var (key, value) in _httpContextAccessor.HttpContext?.Request.Headers)
-                    _log.Info($"key = {key}, value = {value.ToString()}");
-            }
+            // if (_httpContextAccessor.HttpContext?.Request.Headers != null) {
+            //     foreach (var (key, value) in _httpContextAccessor.HttpContext?.Request.Headers)
+            //         _log.Info($"key = {key}, value = {value.ToString()}");
+            // }
 
             var user = _userService.GetByUserId(id);
             // 检查用户是否存在
