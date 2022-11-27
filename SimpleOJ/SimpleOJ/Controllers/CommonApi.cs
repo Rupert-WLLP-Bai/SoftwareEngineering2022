@@ -27,7 +27,14 @@ namespace SimpleOJ.Controllers {
             var ipv4 = Request.HttpContext.Connection.RemoteIpAddress?.ToString();
             // TODO token解析函数有问题
             // 从请求头中获取token
-            var token = Request.Headers["Authorization"].ToString()[7..];
+            var authorization = Request.Headers["Authorization"].ToString();
+            var token = string.Empty;
+            if (authorization.Length > 7) {
+                token = authorization[7..];
+            }
+            else {
+                _log.Warn($"[Bad Token] Request.Headers[\"Authorization\"] = {authorization}");
+            }
             // 从token中获取用户信息
             _log.Debug($"token = {token}");
             string userId;
@@ -48,7 +55,8 @@ namespace SimpleOJ.Controllers {
             if (user == null) {
                 _log.Warn($"用户不存在, 用户id = {userId}");
                 return new Result<CurrentUserInfo>(false, ResultCode.Failure, null);
-            } else {
+            }
+            else {
                 // 用户信息存在
                 // 查看是否超过72h
                 var lastLoginTime = _userLoginService.GetLastLoginTimeByUserId(user.Id!);
@@ -57,7 +65,8 @@ namespace SimpleOJ.Controllers {
                 if (lastLoginTime!.Value.AddHours(72) < DateTime.Now) {
                     _log.Info($"用户登录超时, 用户id = {userId}, 跳转到登录页面");
                     return new Result<CurrentUserInfo>(false, ResultCode.Failure, null);
-                } else {
+                }
+                else {
                     // 没有超时
                     // 验证Token是否过期
                     var jwtStatus = _jwtTokenService.VerifyToken(token, null);
