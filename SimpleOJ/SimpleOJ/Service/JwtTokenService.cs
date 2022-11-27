@@ -16,11 +16,11 @@ using SimpleOJ.Util;
 namespace SimpleOJ.Service {
 
     public class JwtTokenService : IJwtTokenService {
-        public static RedisClient client = new RedisClient("150.158.80.33", 6379, "sadse");
+        public static readonly RedisClient Client = new RedisClient("150.158.80.33", 6379, "sadse");
 
         public string GenerateToken(UserToken userInfo, DateTime now) {
 
-            var key = Encoding.UTF8.GetBytes(JwtSetting.Instance.SecurityKey);
+            var key = Encoding.UTF8.GetBytes(JwtSetting.Instance.SecurityKey!);
 
             //var now = DateTime.Now;
 
@@ -45,7 +45,7 @@ namespace SimpleOJ.Service {
 
             //Set方法可以覆盖原有key值条目对应的键值
             //
-            client.Set(userInfo.Id,
+            Client.Set(userInfo.Id,
                 now.ToLocalTime().ToString(CultureInfo.CurrentCulture),
                 new TimeSpan(0, 0, 30, 0)); //refresh token存入redis
             return jwtToken;
@@ -53,14 +53,14 @@ namespace SimpleOJ.Service {
 
         public void DeleteToken(string userId) {
             //token直接过期
-            client.Set(userId, DateTime.Now, new TimeSpan(0, 0, 0, 1));
+            Client.Set(userId, DateTime.Now, new TimeSpan(0, 0, 0, 1));
         }
 
         public string UpdateToken(UserToken userInfo) {
             var now = DateTime.Now;
             //refresh token
             //无条目时创建，有条目时覆盖
-            client.Set(userInfo.Id, now.ToLocalTime().ToString(CultureInfo.CurrentCulture), new TimeSpan(0, 0, 30, 0));
+            Client.Set(userInfo.Id, now.ToLocalTime().ToString(CultureInfo.CurrentCulture), new TimeSpan(0, 0, 30, 0));
             //access token
             return GenerateToken(userInfo, now);
             /*var claims = new Claim[]
@@ -91,19 +91,24 @@ namespace SimpleOJ.Service {
             switch (res) {
                 case JwtStatus.Expired:
                 {
-                    var claims = parseJwt(token, null);
+                    var claims = ParseJwt(token, null);
                     var userId = claims["id"].ToString();
                     var role = claims["role"].ToString();
-                    var userInfo = new UserToken(userId, User.UserRole.Student);
+                    var userInfo = new UserToken(userId!, User.UserRole.Student);
 
                     var now = DateTime.Now;
-                    client.Set(userId, now, new TimeSpan(0, 0, 30, 0));
+                    Client.Set(userId, now, new TimeSpan(0, 0, 30, 0));
                     return GenerateToken(userInfo, now);
                 }
-
-
+                case JwtStatus.Valid:
+                    break;
+                case JwtStatus.Invalid:
+                    break;
+                case JwtStatus.Error:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(token));
             }
-
             return "";
         }
 
@@ -120,14 +125,14 @@ namespace SimpleOJ.Service {
                 }
                 case "expired":
                 {
-                    var claims = parseJwt(token, secret);
+                    var claims = ParseJwt(token, secret);
                     if (claims == null) {
                         return JwtStatus.Invalid;
                     }
 
                     var userId = claims["id"].ToString();
                     var issuedAt = claims["issuedAt"].ToString();
-                    if (ContainsKey(userId) && issuedAt.Equals(client.Get<string>(userId))) {
+                    if (ContainsKey(userId!) && issuedAt!.Equals(Client.Get<string>(userId))) {
                         return JwtStatus.Expired;
                     }
 
@@ -135,10 +140,10 @@ namespace SimpleOJ.Service {
                 }
                 default:
                 {
-                    var jObject = JObject.Parse(json.ToString());
-                    var userId = jObject["id"].ToString();
-                    var issuedAt = jObject["issuedAt"].ToString();
-                    if (ContainsKey(userId) && issuedAt.Equals(client.Get<string>(userId))) {
+                    var jObject = JObject.Parse(json.ToString()!);
+                    var userId = jObject["id"]!.ToString();
+                    var issuedAt = jObject["issuedAt"]!.ToString();
+                    if (ContainsKey(userId) && issuedAt.Equals(Client.Get<string>(userId))) {
                         return JwtStatus.Valid;
                     }
 
@@ -149,9 +154,9 @@ namespace SimpleOJ.Service {
             return JwtStatus.Error;
         }
 
-        public bool TokenStatus(string token, string secret) {
+        public bool TokenStatus(string token, string? secret) {
             try {
-                secret = secret ?? JwtSetting.Instance.SecurityKey;
+                secret ??= JwtSetting.Instance.SecurityKey;
                 IJsonSerializer serializer = new JsonNetSerializer();
                 IDateTimeProvider provider = new UtcDateTimeProvider();
                 IJwtValidator validator = new JwtValidator(serializer, provider);
@@ -179,14 +184,14 @@ namespace SimpleOJ.Service {
                 IJwtAlgorithm alg = new HMACSHA256Algorithm();
                 IJwtDecoder decoder = new JwtDecoder(serializer, validator, urlEncoder, alg);
                 var json = decoder.Decode(token, secret, true);
-                JObject jo = JObject.Parse(json);
-                return jo["id"].ToString();
+                var jo = JObject.Parse(json);
+                return jo["id"]!.ToString();
             }
             catch (TokenExpiredException e) {
                 //表示过期
                 var claims = e.PayloadData;
                 //表示过期
-                return claims["id"].ToString();
+                return claims["id"]!.ToString()!;
             }
             catch (SignatureVerificationException) {
                 //表示验证不通过
@@ -198,10 +203,10 @@ namespace SimpleOJ.Service {
         }
 
         public bool ContainsKey(string userId) {
-            return client.ContainsKey(userId);
+            return Client.ContainsKey(userId);
         }
 
-        public IReadOnlyDictionary<string, object> parseJwt(String token, string? secret) {
+        public static IReadOnlyDictionary<string, object>? ParseJwt(string token, string? secret) {
             try {
                 secret = secret ?? JwtSetting.Instance.SecurityKey;
                 IJsonSerializer serializer = new JsonNetSerializer();
@@ -220,7 +225,7 @@ namespace SimpleOJ.Service {
                 return claims;
             }
 
-            return null;
+            return null!;
         }
 
 
@@ -237,8 +242,8 @@ namespace SimpleOJ.Service {
                 IJwtAlgorithm alg = new HMACSHA256Algorithm();
                 IJwtDecoder decoder = new JwtDecoder(serializer, validator, urlEncoder, alg);
                 var json = decoder.Decode(token, secret, true);
-                JObject jo = JObject.Parse(json);
-                return jo["role"].ToString();
+                var jo = JObject.Parse(json);
+                return jo["role"]!.ToString();
                 //校验通过，返回解密后的字符串
                 //return json;
             }
@@ -254,7 +259,6 @@ namespace SimpleOJ.Service {
                 return "error";
             }
 
-            return null;
         }
     }
 }

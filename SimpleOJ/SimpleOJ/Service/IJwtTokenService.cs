@@ -34,7 +34,7 @@ namespace SimpleOJ.Service {
         /// <returns>JwtToken的解析状态</returns>
         public JwtStatus VerifyToken(string token, string? secret);
 
-        public bool TokenStatus(string token, string secret);
+        public bool TokenStatus(string token, string? secret);
 
         public string ParseUserId(string token);
 

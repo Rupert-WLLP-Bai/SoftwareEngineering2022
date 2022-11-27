@@ -20,7 +20,7 @@ namespace SimpleOJ.Common {
                 new Claim("role", userInfo.Role.ToString(), ClaimValueTypes.Integer) // 用户权限
             };
 
-            var key = Encoding.UTF8.GetBytes(JwtSetting.Instance.SecurityKey);
+            var key = Encoding.UTF8.GetBytes(JwtSetting.Instance.SecurityKey!);
             //创建令牌
             var token = new JwtSecurityToken(
                 JwtSetting.Instance.Issuer,
