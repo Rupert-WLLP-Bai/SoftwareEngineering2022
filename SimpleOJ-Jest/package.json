@@ -1,0 +1,17 @@
+{
+  "name": "simple-oj-jest",
+  "version": "1.0.0",
+  "description": "simple oj test by jest",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.2.0",
+    "https": "^1.0.0",
+    "jest": "^29.3.1"
+  }
+}
