@@ -1,4 +1,5 @@
 using log4net;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimpleOJ.Common;
 using SimpleOJ.Model;
@@ -19,6 +20,17 @@ namespace SimpleOJ.Controllers {
             _userService = userService;
             _jwtTokenService = jwtTokenService;
             _userLoginService = userLoginService;
+        }
+        
+        /// <summary>
+        /// 登出，注销
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        [Authorize]
+        public Result<ILoginController.OutLoginUserInfo> OutLogin(string userId) {
+            // TODO 注销用户的Token
+            return new Result<ILoginController.OutLoginUserInfo>(true, ResultCode.Success, null);
         }
 
         /// <summary>
