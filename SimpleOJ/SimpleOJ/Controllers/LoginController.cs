@@ -11,17 +11,15 @@ namespace SimpleOJ.Controllers {
     public class LoginController : ControllerBase, ILoginController {
         private readonly IUserService _userService;
         private readonly IJwtTokenService _jwtTokenService;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly ILog _log;
+        private readonly IUserLoginService _userLoginService;
+        private readonly ILog _log = LogManager.GetLogger(typeof(LoginController));
 
-        public LoginController(IHttpContextAccessor httpContextAccessor,IUserService userService,IJwtTokenService jwtTokenService) {
+        public LoginController(IUserService userService, IJwtTokenService jwtTokenService,
+            IUserLoginService userLoginService) {
             _userService = userService;
             _jwtTokenService = jwtTokenService;
-            _log = LogManager.GetLogger(typeof(LoginController));
-            _httpContextAccessor = httpContextAccessor;
+            _userLoginService = userLoginService;
         }
-
-
 
         /// <summary>
         /// 登录
@@ -35,25 +33,36 @@ namespace SimpleOJ.Controllers {
 
             string resultToken;
 
-            // var ip = _httpContextAccessor.HttpContext?.Request.Headers["Origin"].FirstOrDefault();
-            // _log.Info($"HTTP请求IP = {ip}");
-            // if (ip == null) {
-            //     _log.Warn("ip为null");
-            // }
-
             var iPv4 = Request.HttpContext.Connection.RemoteIpAddress?.MapToIPv4();
             var remotePort = Request.HttpContext.Connection.RemotePort;
-            // var iPv6 = Request.HttpContext.Connection.RemoteIpAddress?.MapToIPv6();
-            // _log.Debug($"IPv4 = {iPv4}");
-            // _log.Debug($"IPv6 = {iPv6}");
-            // _log.Debug($"RemotePort = {remotePort}");
             _log.Info(
                 $"调用{typeof(LoginController)},参数为: id = {id}, password = {password} \nIpv4 = {iPv4}, RemotePort = {remotePort.ToString()}");
 
-            // if (_httpContextAccessor.HttpContext?.Request.Headers != null) {
-            //     foreach (var (key, value) in _httpContextAccessor.HttpContext?.Request.Headers)
-            //         _log.Info($"key = {key}, value = {value.ToString()}");
-            // }
+            // 查询用户登录表
+            var userLogin = _userLoginService.GetByUserId(userId: id);
+            // 未登录过
+            if (userLogin == null) {
+                _log.Info($"用户{id}未登录过, 将创建新的登录记录");
+                var newUserLogin = new UserLogin
+                {
+                    UserId = id,
+                    LoginTime = DateTime.Now,
+                    Ip = iPv4?.ToString()
+                };
+                var insertLogin = _userLoginService.InsertLogin(newUserLogin);
+                if (insertLogin == false) {
+                    // 插入失败
+                    _log.Error($"数据库插入用户登录记录失败, 用户id = {id}");
+                    throw new Exception("数据库插入用户登录记录失败");
+                }
+            } else {
+                // 已登录过 更新登录时间
+                _log.Info($"用户{id}已登录过, 上次登录时间为{userLogin.LoginTime.ToString()}");
+                userLogin.LoginTime = DateTime.Now;
+                userLogin.Ip = iPv4?.ToString();
+                _userLoginService.UpdateLogin(userLogin);
+                _log.Info($"更新用户{id}的登录时间为{userLogin.LoginTime.ToString()}");
+            }
 
             var user = _userService.GetByUserId(id);
             // 检查用户是否存在
@@ -77,11 +86,11 @@ namespace SimpleOJ.Controllers {
             } else {
                 // 存在则更新token
                 // 如果存在token
-                var tokenTime = JwtTokenService.client.GetValue(user.Id).TrimStart('\"').TrimEnd('\"');
+                var tokenTime = JwtTokenService.Client.GetValue(user.Id).TrimStart('\"').TrimEnd('\"');
                 _log.Debug($"UserId:{user.Id} 存在Token, 已存在的Token的创建时间:{tokenTime}");
                 //  更新Token
-                var updatedToken = _jwtTokenService.UpdateToken(new UserToken(user.Id!,
-                    (User.UserRole)Enum.Parse(typeof(User.UserRole), user.Role.ToString()!)));
+                var updatedToken = _jwtTokenService.UpdateToken(
+                    new UserToken(user.Id!, (User.UserRole)Enum.Parse(typeof(User.UserRole), user.Role.ToString()!)));
                 _log.Debug($"新生成的Token: {updatedToken}");
                 resultToken = updatedToken;
             }
@@ -91,8 +100,6 @@ namespace SimpleOJ.Controllers {
             return new Result<ILoginController.LoginUserInfo>(true,
                 ResultCode.LoginSuccess,
                 new ILoginController.LoginUserInfo(user, resultToken));
-
-
         }
     }
 }

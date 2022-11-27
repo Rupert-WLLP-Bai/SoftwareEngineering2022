@@ -14,7 +14,7 @@ namespace SimpleOJ.Model {
         /// <summary>
         /// 用户登录时间 
         ///</summary>
-        [SugarColumn(ColumnName = "login_time", IsPrimaryKey = true)]
+        [SugarColumn(ColumnName = "login_time")]
         public DateTime? LoginTime { get; set; }
         /// <summary>
         /// 用户登录ip 
