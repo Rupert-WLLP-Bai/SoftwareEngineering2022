@@ -21,10 +21,10 @@ namespace SimpleOJ.Controllers {
             _userLoginService = userLoginService;
             _jwtTokenService = jwtTokenService;
         }
-        
+
         [HttpGet("CurrentUser")]
         public Result<CurrentUserInfo> GetCurrentUserInfo() {
-            var IPv4 = Request.HttpContext.Connection.RemoteIpAddress?.ToString();
+            var ipv4 = Request.HttpContext.Connection.RemoteIpAddress?.ToString();
             // TODO token解析函数有问题
             // 从请求头中获取token
             var token = Request.Headers["Authorization"].ToString()[7..];
@@ -60,15 +60,19 @@ namespace SimpleOJ.Controllers {
                 } else {
                     // 没有超时
                     // 验证Token是否过期
-                    var jwtStatus = _jwtTokenService.VerifyToken(token,null);
+                    var jwtStatus = _jwtTokenService.VerifyToken(token, null);
                     if (jwtStatus == JwtStatus.Expired) {
                         // 返回新token
                         var updateToken = _jwtTokenService.UpdateToken(token);
                         _log.Info($"用户登录成功, 用户token过期, 用户id = {userId}, 返回新token: {updateToken}");
+                        return new Result<CurrentUserInfo>(true,
+                            ResultCode.Success,
+                            new CurrentUserInfo(user, updateToken, ipv4));
                     }
+
                     // 返回当前token
                     _log.Info($"用户登录成功, 用户id = {userId}, 返回当前token: {token}");
-                    return new Result<CurrentUserInfo>(true, ResultCode.Success, new CurrentUserInfo(user, token, IPv4));
+                    return new Result<CurrentUserInfo>(true, ResultCode.Success, new CurrentUserInfo(user, token, ipv4));
                 }
             }
         }
