@@ -451,6 +451,6 @@ CREATE TABLE
         -- 用户登录时间
         `ip` VARCHAR(255) NOT NULL COMMENT '用户登录ip',
         -- 用户登录ip
-        PRIMARY KEY (`user_id`, `login_time`),
+        PRIMARY KEY (`user_id`),
         FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
     ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户登录表';
