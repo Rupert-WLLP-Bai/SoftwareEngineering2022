@@ -16,8 +16,8 @@ namespace SimpleOJTest {
         }
         private readonly IUserService _userService;
         private readonly ILog _log;
-        public LoginTest() {
-            _userService = new UserService();
+        public LoginTest(IUserService userService) {
+            _userService = userService;
             _log = LogManager.GetLogger("LoginTest");
         }
         /// <summary>
@@ -32,10 +32,6 @@ namespace SimpleOJTest {
             // 随机取出一个管理员
             var admin = admins.OrderBy(_ => Guid.NewGuid()).First();
             Assert.IsNotNull(admin);
-            // TODO 测试登录
-            var result = new OldOldLoginController().OldLogin("admin", "admin");
-            Assert.AreEqual(Convert.ToInt32(OldResultCode.LoginSuccess), result.Code);
-            _log.Debug(result.Msg);
         }
     }
 }

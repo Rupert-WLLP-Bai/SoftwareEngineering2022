@@ -3,6 +3,7 @@ using log4net.Config;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using SimpleOJ.Common;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -88,6 +89,9 @@ builder.Services.AddSwaggerGen(opt => {
         }
     });
 });
+
+// DI
+builder.Services.RegisterService();
 
 // 读取log4net配置
 XmlConfigurator.Configure(new FileInfo("log4net.config"));

@@ -9,8 +9,8 @@ namespace SimpleOJ.Controllers {
     [Route("api/[controller]")]
     public class RegisterController {
         private readonly IUserService _userService;
-        public RegisterController() {
-            _userService = new UserService();
+        public RegisterController(IUserService userService) {
+            _userService = userService;
         }
 
         [HttpPost("Register")]

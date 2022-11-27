@@ -14,13 +14,13 @@ namespace SimpleOJ.Controllers {
         [Authorize(Roles = "Admin")]
         [HttpPost("Upload")]
         [RequestSizeLimit(1024 * 1024 * 1024)]
-        public dynamic Upload(IEnumerable<IFormFile> files, string userId) {
+        public Result<IEnumerable<string>> Upload(IEnumerable<IFormFile> files, string userId) {
             var f = new List<string>();
             foreach (var file in files) {
                 var fileName = file.FileName;
                 f.Add(fileName);
                 //获取文件名后缀
-                var fileExtension = file.FileName.Substring(file.FileName.LastIndexOf(".") + 1);
+                var fileExtension = file.FileName.Substring(file.FileName.LastIndexOf(".", StringComparison.Ordinal) + 1);
                 //保存文件
                 var stream = file.OpenReadStream();
                 //把stream转换成byte[]
@@ -36,7 +36,7 @@ namespace SimpleOJ.Controllers {
                 fs.Close();
             }
 
-            return new OldResult(OldResultCode.Success, f);
+            return new Result<IEnumerable<string>>(true,ResultCode.Success, f);
         }
     }
 }

@@ -107,7 +107,7 @@ namespace SimpleOJ.Service {
             return "";
         }
 
-        public JwtStatus VerifyToken(string token, string secret) {
+        public JwtStatus VerifyToken(string token, string? secret) {
             var json = DecodeJwtToken(token, secret);
             switch (json) {
                 case "error":
@@ -201,7 +201,7 @@ namespace SimpleOJ.Service {
             return client.ContainsKey(userId);
         }
 
-        public IReadOnlyDictionary<string, object> parseJwt(String token, string secret) {
+        public IReadOnlyDictionary<string, object> parseJwt(String token, string? secret) {
             try {
                 secret = secret ?? JwtSetting.Instance.SecurityKey;
                 IJsonSerializer serializer = new JsonNetSerializer();

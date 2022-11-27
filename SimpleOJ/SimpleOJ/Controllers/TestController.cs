@@ -8,33 +8,34 @@ namespace SimpleOJ.Controllers {
     public class TestController : ControllerBase {
         private readonly IJwtTokenService _jwtTokenService;
 
-        public TestController() {
-            _jwtTokenService = new JwtTokenService();
+        public TestController(IJwtTokenService jwtTokenService) {
+            _jwtTokenService = jwtTokenService;
         }
 
         [HttpPost("GenToken")]
-        public OldResult GenToken([FromBody] UserToken userInfo) {
-            return new OldResult(OldResultCode.Success, _jwtTokenService.GenerateToken(userInfo, DateTime.Now));
+        public Result<string> GenToken([FromBody] UserToken userInfo) {
+            return new Result<string>(true, ResultCode.Success, _jwtTokenService.GenerateToken(userInfo, DateTime.Now));
         }
 
+
         [HttpPost("DecodeToken")]
-        public OldResult DecodeToken([FromBody] string token) {
-            return new OldResult(OldResultCode.Success, _jwtTokenService.DecodeJwtToken(token, null));
+        public Result<object> DecodeToken([FromBody] string token) {
+            return new Result<object>(true, ResultCode.Success, _jwtTokenService.DecodeJwtToken(token, null));
         }
 
         [HttpPost("UpdateToken")]
-        public OldResult Update(UserToken userInfo) {
-            return new OldResult(OldResultCode.Success, _jwtTokenService.UpdateToken(userInfo));
+        public Result<string> Update(UserToken userInfo) {
+            return new Result<string>(true, ResultCode.Success, _jwtTokenService.UpdateToken(userInfo));
         }
 
         [HttpPost("UpdateToken2")]
-        public OldResult UpdateToken(string token) {
-            return new OldResult(OldResultCode.Success, _jwtTokenService.UpdateToken(token));
+        public Result<string> UpdateToken(string token) {
+            return new Result<string>(true, ResultCode.Success, _jwtTokenService.UpdateToken(token));
         }
 
         [HttpPost("VerifyToken")]
-        public OldResult VerifyToken(string token) {
-            return new OldResult(OldResultCode.Success, _jwtTokenService.VerifyToken(token, null));
+        public Result<JwtStatus> VerifyToken(string token) {
+            return new Result<JwtStatus>(true, ResultCode.Success, _jwtTokenService.VerifyToken(token, null));
         }
 
 

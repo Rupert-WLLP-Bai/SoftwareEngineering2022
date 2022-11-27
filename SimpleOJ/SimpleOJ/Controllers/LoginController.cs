@@ -14,16 +14,9 @@ namespace SimpleOJ.Controllers {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILog _log;
 
-        // public LoginController() {
-        //     _userService = new UserService();
-        //     _jwtTokenService = new JwtTokenService();
-        //     _log = LogManager.GetLogger(typeof(LoginController));
-        //     _httpContextAccessor = new HttpContextAccessor();
-        // }
-
-        public LoginController(IHttpContextAccessor httpContextAccessor) {
-            _userService = new UserService();
-            _jwtTokenService = new JwtTokenService();
+        public LoginController(IHttpContextAccessor httpContextAccessor,IUserService userService,IJwtTokenService jwtTokenService) {
+            _userService = userService;
+            _jwtTokenService = jwtTokenService;
             _log = LogManager.GetLogger(typeof(LoginController));
             _httpContextAccessor = httpContextAccessor;
         }
@@ -39,9 +32,9 @@ namespace SimpleOJ.Controllers {
         public Result<ILoginController.LoginUserInfo> Login(ILoginController.LoginParam loginParam) {
             var id = loginParam.Id!;
             var password = loginParam.Password!;
-            _log.Info($"调用{typeof(LoginController)},参数为: id = {id}, password = {password}");
+
             string resultToken;
-            
+
             // var ip = _httpContextAccessor.HttpContext?.Request.Headers["Origin"].FirstOrDefault();
             // _log.Info($"HTTP请求IP = {ip}");
             // if (ip == null) {
@@ -50,10 +43,12 @@ namespace SimpleOJ.Controllers {
 
             var iPv4 = Request.HttpContext.Connection.RemoteIpAddress?.MapToIPv4();
             var remotePort = Request.HttpContext.Connection.RemotePort;
-            var iPv6 = Request.HttpContext.Connection.RemoteIpAddress?.MapToIPv6();
-            _log.Info($"IPv4 = {iPv4}");
-            _log.Info($"IPv6 = {iPv6}");
-            _log.Info($"RemotePort = {remotePort}");
+            // var iPv6 = Request.HttpContext.Connection.RemoteIpAddress?.MapToIPv6();
+            // _log.Debug($"IPv4 = {iPv4}");
+            // _log.Debug($"IPv6 = {iPv6}");
+            // _log.Debug($"RemotePort = {remotePort}");
+            _log.Info(
+                $"调用{typeof(LoginController)},参数为: id = {id}, password = {password} \nIpv4 = {iPv4}, RemotePort = {remotePort.ToString()}");
 
             // if (_httpContextAccessor.HttpContext?.Request.Headers != null) {
             //     foreach (var (key, value) in _httpContextAccessor.HttpContext?.Request.Headers)
@@ -92,7 +87,7 @@ namespace SimpleOJ.Controllers {
             }
 
             // 返回登录信息
-            _log.Debug($"当前登录用户:{user}");
+            _log.Info($"当前登录用户:{user}");
             return new Result<ILoginController.LoginUserInfo>(true,
                 ResultCode.LoginSuccess,
                 new ILoginController.LoginUserInfo(user, resultToken));
