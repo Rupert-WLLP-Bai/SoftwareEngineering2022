@@ -21,16 +21,41 @@ namespace SimpleOJ.Controllers {
             _jwtTokenService = jwtTokenService;
             _userLoginService = userLoginService;
         }
-        
+
         /// <summary>
         /// 登出，注销
         /// </summary>
-        /// <param name="userId"></param>
         /// <returns></returns>
         [Authorize]
-        public Result<ILoginController.OutLoginUserInfo> OutLogin(string userId) {
-            // TODO 注销用户的Token
-            return new Result<ILoginController.OutLoginUserInfo>(true, ResultCode.Success, null);
+        [HttpPost("OutLogin")]
+        public Result<ILoginController.OutLoginUserInfo> OutLogin() {
+            // 获取用户的Token
+            // 从请求头中获取token
+            var authorization = Request.Headers["Authorization"].ToString();
+            var token = string.Empty;
+            if (authorization.Length > 7) {
+                token = authorization[7..];
+            } else {
+                _log.Warn($"[Bad Token] Request.Headers[\"Authorization\"] = {authorization}");
+            }
+            // 从token中获取用户信息
+            _log.Debug($"token = {token}");
+            var userId = string.Empty;
+            try {
+                userId = _jwtTokenService.ParseUserId(token);
+            }
+            catch {
+                _log.Error($"token解析失败, token = {token}");
+                return new Result<ILoginController.OutLoginUserInfo>(false, ResultCode.Failure, null);
+            }
+            // [DEBUG]输出
+            _log.Debug($"[注销] 当前用户id为{userId}, token为{token}");
+            var user = _userService.GetByUserId(userId);
+            if (user==null) {
+                return new Result<ILoginController.OutLoginUserInfo>(false, ResultCode.Failure, null);
+            }
+            _jwtTokenService.DeleteToken(userId);
+            return new Result<ILoginController.OutLoginUserInfo>(true, ResultCode.Success, new ILoginController.OutLoginUserInfo(user,token,DateTime.Now));
         }
 
         /// <summary>

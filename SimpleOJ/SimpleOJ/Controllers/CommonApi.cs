@@ -25,7 +25,6 @@ namespace SimpleOJ.Controllers {
         [HttpGet("CurrentUser")]
         public Result<CurrentUserInfo> GetCurrentUserInfo() {
             var ipv4 = Request.HttpContext.Connection.RemoteIpAddress?.ToString();
-            // TODO token解析函数有问题
             // 从请求头中获取token
             var authorization = Request.Headers["Authorization"].ToString();
             var token = string.Empty;
@@ -39,14 +38,12 @@ namespace SimpleOJ.Controllers {
             _log.Debug($"token = {token}");
             string userId;
             try {
-                // TODO userId获取不正确
                 userId = _jwtTokenService.ParseUserId(token);
             }
             catch {
                 _log.Error($"token解析失败, token = {token}");
                 return new Result<CurrentUserInfo>(false, ResultCode.Failure, null);
             }
-
             // [DEBUG]输出
             _log.Debug($"当前用户id为{userId}, token为{token}");
             // 查询用户信息

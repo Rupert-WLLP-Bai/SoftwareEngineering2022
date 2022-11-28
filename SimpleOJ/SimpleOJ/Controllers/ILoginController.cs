@@ -7,7 +7,6 @@ namespace SimpleOJ.Controllers {
         public record LoginUserInfo(User User, string Token);
         public record OutLoginUserInfo(User User, string Token, DateTime OutTime);
         public Result<LoginUserInfo> Login(LoginParam loginParam);
-
-        public Result<OutLoginUserInfo> OutLogin(string userId);
+        public Result<OutLoginUserInfo> OutLogin();
     }
 }
