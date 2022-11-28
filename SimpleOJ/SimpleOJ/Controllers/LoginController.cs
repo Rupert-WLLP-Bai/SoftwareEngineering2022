@@ -26,17 +26,20 @@ namespace SimpleOJ.Controllers {
         /// 登出，注销
         /// </summary>
         /// <returns></returns>
-        [Authorize]
         [HttpPost("OutLogin")]
+        [Authorize]
         public Result<ILoginController.OutLoginUserInfo> OutLogin() {
             // 获取用户的Token
             // 从请求头中获取token
+            foreach (var (key, value) in Request.Headers) {
+                _log.Debug($"{key} = {value}");
+            }
             var authorization = Request.Headers["Authorization"].ToString();
             var token = string.Empty;
             if (authorization.Length > 7) {
                 token = authorization[7..];
             } else {
-                _log.Warn($"[Bad Token] Request.Headers[\"Authorization\"] = {authorization}");
+                _log.Warn($"[OutLogin] [Bad Token] Request.Headers[\"Authorization\"] = {authorization}");
             }
             // 从token中获取用户信息
             _log.Debug($"token = {token}");
@@ -54,7 +57,14 @@ namespace SimpleOJ.Controllers {
             if (user==null) {
                 return new Result<ILoginController.OutLoginUserInfo>(false, ResultCode.Failure, null);
             }
-            _jwtTokenService.DeleteToken(userId);
+            // redis存在用户id
+            if (_jwtTokenService.ContainsKey(userId)) {
+                _log.Info($"用户{userId}申请注销, Redis中存在该用户");
+                _jwtTokenService.DeleteToken(userId);
+                return new Result<ILoginController.OutLoginUserInfo>(true, ResultCode.Success, new ILoginController.OutLoginUserInfo(user,token,DateTime.Now));
+            }
+            // redis不存在，用户已注销
+            _log.Warn($"用户{userId}之前已经注销过, Redis中不存在该用户");
             return new Result<ILoginController.OutLoginUserInfo>(true, ResultCode.Success, new ILoginController.OutLoginUserInfo(user,token,DateTime.Now));
         }
 

@@ -54,7 +54,8 @@ namespace SimpleOJ.Service {
 
         public void DeleteToken(string userId) {
             //token直接过期
-            Client.Set(userId, DateTime.Now, new TimeSpan(0, 0, 0, 1));
+            // Client.Set(userId, DateTime.Now, new TimeSpan(0, 0, 0, 1));
+            var text = Client.Custom("del", $"{userId}");
         }
 
         public string UpdateToken(UserToken userInfo) {
