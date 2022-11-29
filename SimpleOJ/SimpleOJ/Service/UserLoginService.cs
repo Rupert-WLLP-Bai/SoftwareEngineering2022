@@ -18,7 +18,7 @@ namespace SimpleOJ.Service {
 
         public bool UpdateLogin(UserLogin userLogin) {
             // userLogin.UserId用于匹配主键, 更新其他不同的字段
-            return UpdateAsync(userLogin).Result;
+            return this.AsUpdateable(userLogin).UpdateColumns(it => new {it.LoginTime,it.Ip}).ExecuteCommand() > 0;
         }
     }
 }
