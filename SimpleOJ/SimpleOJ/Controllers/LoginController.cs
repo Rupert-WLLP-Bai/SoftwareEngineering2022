@@ -85,32 +85,6 @@ namespace SimpleOJ.Controllers {
             _log.Info(
                 $"调用{typeof(LoginController)},参数为: id = {id}, password = {password} \nIpv4 = {iPv4}, RemotePort = {remotePort.ToString()}");
 
-            // 查询用户登录表
-            var userLogin = _userLoginService.GetByUserId(userId: id);
-            // 未登录过
-            if (userLogin == null) {
-                _log.Info($"用户{id}未登录过, 将创建新的登录记录");
-                var newUserLogin = new UserLogin
-                {
-                    UserId = id,
-                    LoginTime = DateTime.Now,
-                    Ip = iPv4?.ToString()
-                };
-                var insertLogin = _userLoginService.InsertLogin(newUserLogin);
-                if (insertLogin == false) {
-                    // 插入失败
-                    _log.Error($"数据库插入用户登录记录失败, 用户id = {id}");
-                    throw new Exception("数据库插入用户登录记录失败");
-                }
-            } else {
-                // 已登录过 更新登录时间
-                _log.Info($"用户{id}已登录过, 上次登录时间为{userLogin.LoginTime.ToString()}");
-                userLogin.LoginTime = DateTime.Now;
-                userLogin.Ip = iPv4?.ToString();
-                _userLoginService.UpdateLogin(userLogin);
-                _log.Info($"更新用户{id}的登录时间为{userLogin.LoginTime.ToString()}");
-            }
-
             var user = _userService.GetByUserId(id);
             // 检查用户是否存在
             if (user == null) {
@@ -141,7 +115,33 @@ namespace SimpleOJ.Controllers {
                 _log.Debug($"新生成的Token: {updatedToken}");
                 resultToken = updatedToken;
             }
-
+            
+            // 查询用户登录表
+            var userLogin = _userLoginService.GetByUserId(userId: id);
+            // 未登录过
+            if (userLogin == null) {
+                _log.Info($"用户{id}未登录过, 将创建新的登录记录");
+                var newUserLogin = new UserLogin
+                {
+                    UserId = id,
+                    LoginTime = DateTime.Now,
+                    Ip = iPv4?.ToString()
+                };
+                var insertLogin = _userLoginService.InsertLogin(newUserLogin);
+                if (insertLogin == false) {
+                    // 插入失败
+                    _log.Error($"数据库插入用户登录记录失败, 用户id = {id}");
+                    throw new Exception("数据库插入用户登录记录失败");
+                }
+            } else {
+                // 已登录过 更新登录时间
+                _log.Info($"用户{id}已登录过, 上次登录时间为{userLogin.LoginTime.ToString()}");
+                userLogin.LoginTime = DateTime.Now;
+                userLogin.Ip = iPv4?.ToString();
+                _userLoginService.UpdateLogin(userLogin);
+                _log.Info($"更新用户{id}的登录时间为{userLogin.LoginTime.ToString()}");
+            }
+            
             // 返回登录信息
             _log.Info($"当前登录用户:{user}");
             return new Result<ILoginController.LoginUserInfo>(true,
