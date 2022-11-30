@@ -1,7 +1,5 @@
 const axios = require('axios');
 const https = require('https');
-// import jest
-const { expect } = require('@jest/globals');
 
 let url = 'https://150.158.80.33:7191/api';
 url = 'https://localhost:7069/api';
@@ -15,7 +13,7 @@ const agent = new axios.create({
 // 登录测试
 // id = "admin"
 // password = "admin"
-var token = ""; // 保存token
+let token = ""; // 保存token
 
 describe('登录测试', () => {
     it('管理员登录成功', async () => {

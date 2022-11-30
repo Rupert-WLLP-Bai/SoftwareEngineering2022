@@ -26,7 +26,7 @@ namespace SimpleOJ.Controllers {
         /// 登出，注销
         /// </summary>
         /// <returns></returns>
-        [HttpPost("OutLogin")]
+        [HttpGet("OutLogin")]
         [Authorize]
         public Result<ILoginController.OutLoginUserInfo> OutLogin() {
             // 获取用户的Token

@@ -183,7 +183,7 @@ namespace SimpleOJ.Service {
                 IJwtAlgorithm alg = new HMACSHA256Algorithm();
                 IJwtDecoder decoder = new JwtDecoder(serializer, validator, urlEncoder, alg);
                 var json = decoder.Decode(token, secret, true);
-                JObject jo = JObject.Parse(json);
+                var jo = JObject.Parse(json);
                 return jo["id"].ToString();
             }
             catch (TokenExpiredException e) {
