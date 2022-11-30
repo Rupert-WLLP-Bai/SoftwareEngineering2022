@@ -6,6 +6,7 @@ namespace SimpleOJ.Common {
             serviceCollection.AddTransient<IUserService, UserService>();
             serviceCollection.AddTransient<IJwtTokenService, JwtTokenService>();
             serviceCollection.AddTransient<IUserLoginService, UserLoginService>();
+            serviceCollection.AddTransient<IExperimentService, ExperimentService>();
         }
     }
 }
