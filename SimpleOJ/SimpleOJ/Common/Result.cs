@@ -42,6 +42,10 @@ namespace SimpleOJ.Common {
             return en.ToString();
         }
 
+        public Result(T? data) {
+            Init(true, -1, "Uninitialized", data);
+        }
+
         /// <summary>
         /// 构造函数
         /// </summary>
@@ -63,29 +67,19 @@ namespace SimpleOJ.Common {
     /// <example> LoginPasswordIncorrect 1001 </example>
     public enum ResultCode {
         // 通用
-        [Description("未初始化")]
-        Uninitialized = -1,
-        [Description("成功")]
-        Success = 0,
-        [Description("失败")]
-        Failure = 1,
+        [Description("未初始化")] Uninitialized = -1,
+        [Description("成功")] Success = 0,
+        [Description("失败")] Failure = 1,
 
         // 登录 10XX
-        [Description("登录成功")]
-        LoginSuccess = 1000,
-        [Description("登录密码错误")]
-        LoginPasswordIncorrect = 1001,
-        [Description("登录账号不存在")]
-        LoginAccountNotExist = 1002,
-        [Description("登录账号未激活")]
-        LoginAccountNotActivated = 1003,
+        [Description("登录成功")] LoginSuccess = 1000,
+        [Description("登录密码错误")] LoginPasswordIncorrect = 1001,
+        [Description("登录账号不存在")] LoginAccountNotExist = 1002,
+        [Description("登录账号未激活")] LoginAccountNotActivated = 1003,
 
         // 注册 11XX
-        [Description("注册成功")]
-        RegisterSuccess = 1100,
-        [Description("注册账号已存在")]
-        RegisterAccountExist = 1101,
-        [Description("数据库添加注册用户失败")]
-        RegisterAddUserFailed = 1102
+        [Description("注册成功")] RegisterSuccess = 1100,
+        [Description("注册账号已存在")] RegisterAccountExist = 1101,
+        [Description("数据库添加注册用户失败")] RegisterAddUserFailed = 1102
     }
 }

@@ -22,5 +22,13 @@ namespace SimpleOJ.Controllers {
             var experiments = _experimentService.GetExperiments(current, pageSize, ref total);
             return new Result<ExperimentList>(true,ResultCode.Success, new ExperimentList(experiments, total));
         }
+        
+        // 批量删除实验
+        // 返回删除的实验实体列表
+        [HttpDelete]
+        public Result<IEnumerable<Experiment>> DeleteExperiments([FromBody] IEnumerable<string> ids) {
+            var experiments = _experimentService.DeleteExperiments(ids);
+            return new Result<IEnumerable<Experiment>>(true, ResultCode.Success, experiments);
+        }
     }
 }
