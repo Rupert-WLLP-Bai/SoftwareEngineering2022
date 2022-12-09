@@ -42,5 +42,13 @@ namespace SimpleOJ.Service {
             }
             return true;
         }
+
+        public IEnumerable<Experiment> DeleteExperiments(IEnumerable<string> ids) {
+            var list = base.GetList(it => ids.Contains(it.Id));
+            foreach (var exp in list) {
+                base.Delete(exp);
+            }
+            return list;
+        }
     }
 }

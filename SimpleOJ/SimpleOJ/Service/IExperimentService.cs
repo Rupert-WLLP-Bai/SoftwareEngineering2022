@@ -17,5 +17,12 @@ namespace SimpleOJ.Service {
         /// <param name="count"></param>
         /// <returns></returns>
         bool GenerateExperiments(int count);
+        
+        /// <summary>
+        /// 批量删除实验
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        IEnumerable<Experiment> DeleteExperiments(IEnumerable<string> ids);
     }
 }

@@ -15,12 +15,19 @@ namespace SimpleOJ.Controllers {
         }
         
         // 分页查询和获取所有实验列表
-        public record ExperimentList(IEnumerable<Experiment> Experiments, int Total);
         [HttpGet]
-        public Result<ExperimentList> GetExperiments(int? current, int? pageSize) {
+        public Result<IEnumerable<Experiment>> GetExperiments(int? current, int? pageSize) {
             var total = 0;
             var experiments = _experimentService.GetExperiments(current, pageSize, ref total);
-            return new Result<ExperimentList>(true,ResultCode.Success, new ExperimentList(experiments, total));
+            return new Result<IEnumerable<Experiment>>(true,ResultCode.Success, experiments);
+        }
+        
+        // 批量删除实验
+        // 返回删除的实验实体列表
+        [HttpDelete]
+        public Result<IEnumerable<Experiment>> DeleteExperiments([FromBody] IEnumerable<string> ids) {
+            var experiments = _experimentService.DeleteExperiments(ids);
+            return new Result<IEnumerable<Experiment>>(true, ResultCode.Success, experiments);
         }
     }
 }
