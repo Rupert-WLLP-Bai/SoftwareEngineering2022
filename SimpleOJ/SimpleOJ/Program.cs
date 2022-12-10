@@ -117,7 +117,7 @@ app.UseCors("cors");
 // middleware
 app.UseForwardedHeaders();
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 
 app.UseAuthentication();
 
