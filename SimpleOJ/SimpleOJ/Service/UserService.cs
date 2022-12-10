@@ -1,5 +1,6 @@
 ﻿using SimpleOJ.Config;
 using SimpleOJ.Model;
+using SqlSugar;
 
 namespace SimpleOJ.Service {
     public class UserService : Repository<User>, IUserService {
@@ -28,6 +29,22 @@ namespace SimpleOJ.Service {
 
         public User? AddUser(User user) {
             return Insert(user) ? user : null;
+        }
+
+        public IEnumerable<User> GetUsers(int? pageIndex, int? pageSize) {
+            // 如果不需要分页，可以直接调用 base.GetList()
+            if (pageIndex == null || pageSize == null) {
+                return base.GetList();
+            }
+            var p = new PageModel()
+            {
+                PageIndex = pageIndex.Value,
+                PageSize = pageSize.Value
+            };
+            var list = Db.Queryable<User>()
+                .OrderBy(it => it.Id, OrderByType.Desc)
+                .ToPageList(p.PageIndex, p.PageSize);
+            return list;
         }
     }
 }

@@ -29,5 +29,13 @@ namespace SimpleOJ.Service {
         /// <param name="user">新用户</param>
         /// <returns>成功返回用户，不成功返回null</returns>
         public User? AddUser(User user);
+
+        /// <summary>
+        /// 分页获取用户
+        /// </summary>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        public IEnumerable<User> GetUsers(int? pageIndex, int? pageSize);
     }
 }

@@ -5,7 +5,7 @@ using SimpleOJ.Service;
 
 namespace SimpleOJ.RestController.UserManagement {
     [ApiController]
-    [Route("api/v1/[controller]")]
+    [Route("api/[controller]")]
     public class UserController : ControllerBase {
         private readonly IUserService _userService;
         public UserController(IUserService userService) {
@@ -14,7 +14,8 @@ namespace SimpleOJ.RestController.UserManagement {
 
         [HttpGet]
         public Result<IEnumerable<User>> GetAll(int? current, int? pageSize) {
-            return new Result<IEnumerable<User>>(null);
+            var users = _userService.GetUsers(current,pageSize);
+            return new Result<IEnumerable<User>>(true, ResultCode.Success, users);
         }
 
         [HttpGet("{id}")]
