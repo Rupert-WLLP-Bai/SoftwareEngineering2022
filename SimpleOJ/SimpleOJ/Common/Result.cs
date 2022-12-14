@@ -59,7 +59,7 @@ namespace SimpleOJ.Common {
         public Result(bool status, ResultCode resultCode, T? data) {
             Init(status, (int)resultCode, GetStatusCodeDescription(resultCode), data, data is IList list ? list.Count : 0);
         }
-        public override string ToString() {
+        override public string ToString() {
             return $"{nameof(Success)}: {Success}, {nameof(Code)}: {Code}, {nameof(Msg)}: {Msg}, {nameof(Data)}: {Data}";
         }
     }

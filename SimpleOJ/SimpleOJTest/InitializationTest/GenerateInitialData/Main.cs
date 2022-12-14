@@ -5,7 +5,7 @@ namespace SimpleOJTest.InitializationTest.GenerateInitialData {
     public class Main {
         [TestMethod]
         public void ExpGen() {
-            new ExperimentService().GenerateExperiments(1800);
+            new ExperimentService().GenerateExperiments(100);
         }
     }
 }

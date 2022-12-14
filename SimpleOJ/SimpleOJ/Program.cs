@@ -1,4 +1,6 @@
+using System.ComponentModel;
 using System.Text;
+using System.Text.Json;
 using log4net.Config;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.IdentityModel.Tokens;
@@ -103,6 +105,9 @@ if (app.Environment.IsDevelopment()) {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 // use forwarded headers
 app.UseForwardedHeaders(new ForwardedHeadersOptions
