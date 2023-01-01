@@ -29,5 +29,7 @@ namespace SimpleOJ.Service {
         /// <param name="userLogin"></param>
         /// <returns></returns>
         public bool UpdateLogin(UserLogin userLogin);
+        
+        
     }
 }

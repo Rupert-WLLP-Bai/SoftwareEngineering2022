@@ -24,5 +24,12 @@ namespace SimpleOJ.Service {
         /// <param name="ids"></param>
         /// <returns></returns>
         IEnumerable<Experiment> DeleteExperiments(IEnumerable<string> ids);
+        
+        /// <summary>
+        /// 上传实验
+        /// </summary>
+        /// <param name="experiment"></param>
+        /// <returns></returns>
+        Experiment? UploadExperiment(Experiment experiment);
     }
 }

@@ -148,5 +148,19 @@ namespace SimpleOJ.Controllers {
                 ResultCode.LoginSuccess,
                 new ILoginController.LoginUserInfo(user, resultToken));
         }
+
+        /// <summary>
+        /// 用户重置密码
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="email"></param>
+        /// <param name="phone"></param>
+        /// <param name="newPassword"></param>
+        /// <returns></returns>
+        [HttpPost("ResetPassword")]
+        public Result<User> ResetPassword(string? id, string? email, string? phone, string? newPassword) {
+            // TODO: 重置密码
+            throw new NotImplementedException();
+        }
     }
 }

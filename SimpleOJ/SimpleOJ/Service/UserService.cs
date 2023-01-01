@@ -46,5 +46,11 @@ namespace SimpleOJ.Service {
                 .ToPageList(p.PageIndex, p.PageSize);
             return list;
         }
+        
+        public bool UpdateUser(User user) {
+            return this.Update(user);
+        }
+        
+        
     }
 }

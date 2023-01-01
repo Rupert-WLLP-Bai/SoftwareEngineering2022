@@ -50,5 +50,31 @@ namespace SimpleOJ.Service {
             }
             return list;
         }
+
+        public Experiment? UploadExperiment(Experiment experiment) {
+            // 1. 检查实验是否存在
+            var exp = this.GetSingle(experiment1 => experiment1.Id == experiment.Id);
+            // 如果实验存在，更新实验
+            if (exp != null) {
+                exp.Name = experiment.Name;
+                exp.Status = experiment.Status;
+                exp.TeacherId = experiment.TeacherId;
+                exp.UpdateTime = DateTime.Now;
+                exp.DistributeTime = experiment.DistributeTime;
+                exp.FilePath = experiment.FilePath;
+                exp.StartTime = experiment.StartTime;
+                exp.EndTime = experiment.EndTime;
+                exp.Description = experiment.Description;
+                exp.UploadTimesLimit = experiment.UploadTimesLimit;
+                base.Update(exp);
+            }
+            // 如果实验不存在，插入实验
+            else {
+                experiment.CreateTime = DateTime.Now;
+                experiment.UpdateTime = DateTime.Now;
+                base.Insert(experiment);
+            }
+            return experiment;
+        }
     }
 }

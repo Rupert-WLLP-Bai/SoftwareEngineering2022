@@ -29,5 +29,12 @@ namespace SimpleOJ.Controllers {
             var experiments = _experimentService.DeleteExperiments(ids);
             return new Result<IEnumerable<Experiment>>(true, ResultCode.Success, experiments);
         }
+        
+        // 上传实验
+        [HttpPost]
+        public Result<Experiment?> UploadExperiment([FromBody] Experiment experiment) {
+            var result = _experimentService.UploadExperiment(experiment);
+            return new Result<Experiment?>(true, ResultCode.Success, result);
+        }
     }
 }
